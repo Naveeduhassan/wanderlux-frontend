@@ -1,8 +1,89 @@
 import './DestinationsPage.css';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import api from '../../services/api';
+import { fetchWithCache } from '../../services/apiCache';
 import toast from 'react-hot-toast';
+
+const initialDestinationsFallback = [
+  {
+    _id: '1',
+    name: 'Paris',
+    location: 'France',
+    country: 'France',
+    image: '/images/dest-paris.jpg',
+    badge: { icon: 'fas fa-fire', text: 'Hot Deal' },
+    price: 899,
+    description: 'Experience the city of love with iconic landmarks, world-class cuisine, and romantic ambiance.',
+    reviews: 1245,
+    rating: 5,
+    duration: '7 Days'
+  },
+  {
+    _id: '2',
+    name: 'Dubai',
+    location: 'United Arab Emirates',
+    country: 'United Arab Emirates',
+    image: '/images/dest-dubai.jpg',
+    badge: { icon: 'fas fa-gem', text: 'Luxury' },
+    price: 1299,
+    description: 'Explore modern marvels, luxury shopping, desert safaris, and stunning architecture.',
+    reviews: 987,
+    rating: 5,
+    duration: '5 Days'
+  },
+  {
+    _id: '3',
+    name: 'Switzerland',
+    location: 'Switzerland',
+    country: 'Switzerland',
+    image: '/images/dest-switzerland.jpg',
+    badge: { icon: 'fas fa-mountain', text: 'Adventure' },
+    price: 1599,
+    description: 'Majestic Alps, pristine lakes, charming villages, and unforgettable scenic train journeys.',
+    reviews: 1543,
+    rating: 5,
+    duration: '8 Days'
+  },
+  {
+    _id: '4',
+    name: 'Istanbul, Turkey',
+    location: 'Turkey',
+    country: 'Turkey',
+    image: '/images/dest-turkey.jpg',
+    badge: { icon: 'fas fa-certificate', text: 'Best Value' },
+    price: 749,
+    description: 'Where East meets West. Rich history, vibrant bazaars, stunning mosques, and Bosphorus cruises.',
+    reviews: 823,
+    rating: 5,
+    duration: '6 Days'
+  },
+  {
+    _id: '5',
+    name: 'Bali',
+    location: 'Indonesia',
+    country: 'Indonesia',
+    image: '/images/dest-bali.jpg',
+    badge: { icon: 'fas fa-heart', text: 'Popular' },
+    price: 999,
+    description: 'Tropical paradise with lush rice terraces, sacred temples, vibrant culture, and pristine beaches.',
+    reviews: 1102,
+    rating: 5,
+    duration: '7 Days'
+  },
+  {
+    _id: '6',
+    name: 'Santorini',
+    location: 'Greece',
+    country: 'Greece',
+    image: '/images/dest-santorini.jpg',
+    badge: { icon: 'fas fa-sun', text: 'Romantic' },
+    price: 1199,
+    description: 'Iconic whitewashed buildings, blue-domed churches, dramatic caldera views, and stunning sunsets.',
+    reviews: 754,
+    rating: 5,
+    duration: '6 Days'
+  }
+];
 
 const DestinationsPage = () => {
   const navigate = useNavigate();
@@ -12,8 +93,8 @@ const DestinationsPage = () => {
   const dateQuery = searchParams.get('date') || '';
   const travelersQuery = searchParams.get('travelers') || '1';
 
-  const [destinations, setDestinations] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [destinations, setDestinations] = useState(initialDestinationsFallback);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedDestModal, setSelectedDestModal] = useState(null);
 
   const handleBookClick = (targetUrl) => {
@@ -27,17 +108,14 @@ const DestinationsPage = () => {
   };
 
   useEffect(() => {
-    const fetchDestinations = async () => {
-      try {
-        const res = await api.get('/destinations/public');
-        setDestinations(res.data);
-      } catch (err) {
-        console.error('Error fetching destinations:', err);
-      } finally {
-        setIsLoading(false);
+    const loadDestinations = async () => {
+      const data = await fetchWithCache('/destinations/public', initialDestinationsFallback);
+      if (data && data.length > 0) {
+        setDestinations(data);
       }
+      setIsLoading(false);
     };
-    fetchDestinations();
+    loadDestinations();
   }, []);
 
   const renderStars = (rating = 5) => {

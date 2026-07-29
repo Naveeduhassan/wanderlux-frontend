@@ -1,28 +1,36 @@
 import './GalleryPage.css';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../../services/api';
+import { fetchWithCache } from '../../services/apiCache';
+
+const initialGalleryFallback = [
+  { title: 'Maldives Crystal Waters', category: 'beaches', categoryLabel: 'Beaches', image: '/images/pkg-maldives.jpg' },
+  { title: 'Swiss Alps Peak', category: 'mountains', categoryLabel: 'Mountains', image: '/images/pkg-swiss.jpg' },
+  { title: 'Paris at Night', category: 'cities', categoryLabel: 'Cities', image: '/images/dest-paris.jpg' },
+  { title: 'African Safari', category: 'wildlife', categoryLabel: 'Wildlife', image: '/images/pkg-kenya.jpg' },
+  { title: 'Luxury Resort Pool', category: 'hotels', categoryLabel: 'Hotels', image: '/images/gal-resort-pool.jpg' },
+  { title: 'Alpine Lake Reflection', category: 'mountains', categoryLabel: 'Mountains', image: '/images/dest-switzerland.jpg' },
+  { title: 'Dubai Skyline', category: 'cities', categoryLabel: 'Cities', image: '/images/dest-dubai.jpg' },
+  { title: 'Bali Rice Terraces', category: 'beaches', categoryLabel: 'Beaches', image: '/images/dest-bali.jpg' },
+  { title: 'Private Villa Pool', category: 'hotels', categoryLabel: 'Hotels', image: '/images/pkg-bali-romance.jpg' },
+  { title: 'Tokyo Streets', category: 'cities', categoryLabel: 'Cities', image: '/images/dest-japan.jpg' }
+];
 
 const GalleryPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [lightboxImage, setLightboxImage] = useState(null);
-  const [galleryItems, setGalleryItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [galleryItems, setGalleryItems] = useState(initialGalleryFallback);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchGallery = async () => {
-      try {
-        const res = await api.get('/gallery/public');
-        if (res.data && res.data.length > 0) {
-          setGalleryItems(res.data);
-        }
-      } catch (err) {
-        console.error('Error fetching gallery items:', err);
-      } finally {
-        setIsLoading(false);
+    const loadGallery = async () => {
+      const data = await fetchWithCache('/gallery/public', initialGalleryFallback);
+      if (data && data.length > 0) {
+        setGalleryItems(data);
       }
+      setIsLoading(false);
     };
-    fetchGallery();
+    loadGallery();
   }, []);
 
   const filteredItems = selectedCategory === 'all'

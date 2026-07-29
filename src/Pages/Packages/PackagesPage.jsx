@@ -1,14 +1,74 @@
 import './PackagesPage.css';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import api from '../../services/api';
+import { fetchWithCache } from '../../services/apiCache';
 import toast from 'react-hot-toast';
+
+const initialPackagesFallback = [
+  {
+    _id: '1',
+    name: 'Maldives Paradise Escape',
+    destination: 'Maldives',
+    category: 'honeymoon',
+    price: 1899,
+    priceType: 'per person',
+    duration: '6 Days / 5 Nights',
+    rating: 5,
+    image: '/images/pkg-maldives.jpg',
+    badgeText: 'Honeymoon Special',
+    description: 'Overwater villa stay with private pool, all-inclusive dining, sunset dolphin cruise, and complimentary spa treatment.',
+    features: [
+      { icon: 'fas fa-hotel', text: '5-Star Overwater Resort' },
+      { icon: 'fas fa-utensils', text: 'All-Inclusive Meals & Drinks' },
+      { icon: 'fas fa-plane', text: 'Seaplane Transfers Included' },
+      { icon: 'fas fa-spa', text: 'Couples Spa Treatment' }
+    ]
+  },
+  {
+    _id: '2',
+    name: 'Swiss Alps Scenic Odyssey',
+    destination: 'Switzerland',
+    category: 'adventure',
+    price: 2499,
+    priceType: 'per person',
+    duration: '8 Days / 7 Nights',
+    rating: 5,
+    image: '/images/pkg-swiss.jpg',
+    badgeText: 'Best Seller',
+    description: 'Scenic train journeys on Glacier Express, Jungfraujoch top of Europe excursion, alpine hiking, and luxury mountain lodges.',
+    features: [
+      { icon: 'fas fa-train', text: 'Glacier Express First Class' },
+      { icon: 'fas fa-hotel', text: '4-Star Alpine Hotels' },
+      { icon: 'fas fa-ticket-alt', text: 'All Mountain Passes Included' },
+      { icon: 'fas fa-user-guide', text: 'Professional Mountain Guide' }
+    ]
+  },
+  {
+    _id: '3',
+    name: 'Romantic Bali & Tropical Villas',
+    destination: 'Bali, Indonesia',
+    category: 'romantic',
+    price: 1399,
+    priceType: 'per person',
+    duration: '7 Days / 6 Nights',
+    rating: 5,
+    image: '/images/pkg-bali-romance.jpg',
+    badgeText: 'Top Rated',
+    description: 'Private pool villa in Ubud, floating breakfast, beach club VIP passes in Seminyak, and sacred temple tours.',
+    features: [
+      { icon: 'fas fa-home', text: 'Private Pool Villa Stay' },
+      { icon: 'fas fa-coffee', text: 'Daily Floating Breakfast' },
+      { icon: 'fas fa-car', text: 'Private Chauffeur & Car' },
+      { icon: 'fas fa-umbrella-beach', text: 'VIP Beach Club Access' }
+    ]
+  }
+];
 
 const PackagesPage = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [packages, setPackages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [packages, setPackages] = useState(initialPackagesFallback);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedPkgModal, setSelectedPkgModal] = useState(null);
 
   const handleBookClick = (targetUrl) => {
@@ -22,17 +82,14 @@ const PackagesPage = () => {
   };
 
   useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const res = await api.get('/packages/public');
-        setPackages(res.data);
-      } catch (err) {
-        console.error('Error fetching packages:', err);
-      } finally {
-        setIsLoading(false);
+    const loadPackages = async () => {
+      const data = await fetchWithCache('/packages/public', initialPackagesFallback);
+      if (data && data.length > 0) {
+        setPackages(data);
       }
+      setIsLoading(false);
     };
-    fetchPackages();
+    loadPackages();
   }, []);
 
   const categories = [
