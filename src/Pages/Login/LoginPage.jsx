@@ -51,10 +51,11 @@ function LoginPage() {
       }
     }
 
-    // Check device admin status
+    // Check device admin status (Only show admin tab on admin system/device or with secret parameter)
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const isFlaggedDevice = localStorage.getItem('wanderlux_admin_device') === 'true';
-    if (isLocalhost || isFlaggedDevice) {
+    const hasAdminParam = searchParams.get('admin') === 'true' || searchParams.get('mode') === 'admin';
+    if (isLocalhost || isFlaggedDevice || hasAdminParam) {
       setIsAdminDevice(true);
     }
   }, [searchParams, navigate, redirectPath]);
@@ -318,13 +319,15 @@ function LoginPage() {
             >
               <UserPlus size={15} /> Register
             </button>
-            <button
-              type="button"
-              onClick={autoFillAdmin}
-              className={`auth-tab-btn ${mode === 'admin' ? 'active-admin' : ''}`}
-            >
-              <ShieldCheck size={15} /> Admin
-            </button>
+            {isAdminDevice && (
+              <button
+                type="button"
+                onClick={autoFillAdmin}
+                className={`auth-tab-btn ${mode === 'admin' ? 'active-admin' : ''}`}
+              >
+                <ShieldCheck size={15} /> Admin Portal
+              </button>
+            )}
           </div>
 
           {/* ADMIN DEVICE DETECTED ALERT BANNER */}
