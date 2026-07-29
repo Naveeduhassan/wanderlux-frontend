@@ -9,6 +9,27 @@ function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Helper to close mobile Bootstrap navbar on link click
+  const closeMobileNavbar = () => {
+    const navMenu = document.getElementById('navMenu');
+    if (navMenu && navMenu.classList.contains('show')) {
+      try {
+        if (window.bootstrap && window.bootstrap.Collapse) {
+          const bsCollapse = window.bootstrap.Collapse.getInstance(navMenu) || new window.bootstrap.Collapse(navMenu);
+          if (bsCollapse) bsCollapse.hide();
+        } else {
+          navMenu.classList.remove('show');
+        }
+      } catch (e) {
+        navMenu.classList.remove('show');
+      }
+    }
+  };
+
+  useEffect(() => {
+    closeMobileNavbar();
+  }, [location.pathname]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -37,6 +58,7 @@ function Navbar() {
   }, []);
 
   const handleLogout = () => {
+    closeMobileNavbar();
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setUser(null);
@@ -60,7 +82,7 @@ function Navbar() {
   return (
     <nav className={`navbar navbar-custom navbar-expand-lg ${showNavbarBackground ? 'scrolled' : ''}`} id="mainNavbar" role="navigation" aria-label="Main navigation">
       <div className="container">
-        <Link className="navbar-brand" to="/">
+        <Link className="navbar-brand" to="/" onClick={closeMobileNavbar}>
           <div className="brand-icon" aria-hidden="true"><i className="fas fa-globe-americas"></i></div>
           <span className="brand-text">Wander<span>Lux</span></span>
         </Link>
@@ -70,28 +92,28 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navMenu">
           <ul className="navbar-nav ms-auto align-items-lg-center gap-1">
             <li className="nav-item">
-              <Link className={`nav-link ${isHomeActive ? 'active' : ''}`} to="/">Home</Link>
+              <Link className={`nav-link ${isHomeActive ? 'active' : ''}`} to="/" onClick={closeMobileNavbar}>Home</Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${isAboutActive ? 'active' : ''}`} to="/about">About</Link>
+              <Link className={`nav-link ${isAboutActive ? 'active' : ''}`} to="/about" onClick={closeMobileNavbar}>About</Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${isDestinationsActive ? 'active' : ''}`} to="/destinations">Destinations</Link>
+              <Link className={`nav-link ${isDestinationsActive ? 'active' : ''}`} to="/destinations" onClick={closeMobileNavbar}>Destinations</Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${isPackagesActive ? 'active' : ''}`} to="/packages">Packages</Link>
+              <Link className={`nav-link ${isPackagesActive ? 'active' : ''}`} to="/packages" onClick={closeMobileNavbar}>Packages</Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${isGalleryActive ? 'active' : ''}`} to="/gallery">Gallery</Link>
+              <Link className={`nav-link ${isGalleryActive ? 'active' : ''}`} to="/gallery" onClick={closeMobileNavbar}>Gallery</Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${isTestimonialsActive ? 'active' : ''}`} to="/testimonials">Testimonials</Link>
+              <Link className={`nav-link ${isTestimonialsActive ? 'active' : ''}`} to="/testimonials" onClick={closeMobileNavbar}>Testimonials</Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${isBlogActive ? 'active' : ''}`} to="/blog">Blog</Link>
+              <Link className={`nav-link ${isBlogActive ? 'active' : ''}`} to="/blog" onClick={closeMobileNavbar}>Blog</Link>
             </li>
             <li className="nav-item">
-              <Link className={`nav-link ${isFAQActive ? 'active' : ''}`} to="/faq">FAQ</Link>
+              <Link className={`nav-link ${isFAQActive ? 'active' : ''}`} to="/faq" onClick={closeMobileNavbar}>FAQ</Link>
             </li>
             {user ? (
               user.role === 'admin' ? (
@@ -118,7 +140,7 @@ function Navbar() {
                         <strong className="text-dark small d-block">{user.name}</strong>
                       </li>
                       <li>
-                        <Link className="dropdown-item rounded-2 py-2 small fw-semibold d-flex align-items-center gap-2" to="/admin/dashboard">
+                        <Link className="dropdown-item rounded-2 py-2 small fw-semibold d-flex align-items-center gap-2" to="/admin/dashboard" onClick={closeMobileNavbar}>
                           <i className="fas fa-chart-line text-primary"></i> Admin Dashboard
                         </Link>
                       </li>
@@ -157,7 +179,7 @@ function Navbar() {
                         <small className="text-muted d-block text-truncate" style={{ fontSize: '0.75rem' }}>{user.email}</small>
                       </li>
                       <li>
-                        <Link className="dropdown-item rounded-2 py-2 small fw-semibold d-flex align-items-center gap-2" to="/contact">
+                        <Link className="dropdown-item rounded-2 py-2 small fw-semibold d-flex align-items-center gap-2" to="/contact" onClick={closeMobileNavbar}>
                           <i className="fas fa-suitcase-rolling text-primary"></i> My Bookings
                         </Link>
                       </li>
@@ -176,6 +198,7 @@ function Navbar() {
                 <Link
                   className="nav-link text-white text-nowrap d-inline-flex align-items-center justify-content-center px-3 py-1-5 rounded-pill fw-semibold"
                   to="/login"
+                  onClick={closeMobileNavbar}
                   style={{
                     background: 'rgba(255, 255, 255, 0.12)',
                     border: '1px solid rgba(255, 255, 255, 0.25)',
@@ -192,6 +215,7 @@ function Navbar() {
               <Link 
                 className={`nav-link nav-book-btn text-nowrap d-inline-flex align-items-center justify-content-center ${isContactActive ? 'active' : ''}`} 
                 to="/contact"
+                onClick={closeMobileNavbar}
                 style={{ whiteSpace: 'nowrap' }}
               >
                 <i className="fas fa-paper-plane me-1.5"></i>Book Now
