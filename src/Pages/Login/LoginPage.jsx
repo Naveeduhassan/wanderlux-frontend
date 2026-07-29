@@ -154,7 +154,8 @@ function LoginPage() {
 
   // Passport Google OAuth Initiation
   const handlePassportGoogleLogin = () => {
-    window.location.href = 'http://localhost:5000/auth/google';
+    const backendUrl = api.defaults.baseURL || 'https://wanderlux-backend.onrender.com';
+    window.location.href = `${backendUrl}/auth/google`;
   };
 
   // Quick Google Auth Submit
