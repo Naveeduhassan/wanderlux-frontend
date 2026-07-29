@@ -4,10 +4,69 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
 
+const initialPackages = [
+  {
+    _id: '1',
+    name: 'Maldives Paradise Escape',
+    destination: 'Maldives',
+    category: 'honeymoon',
+    price: 1899,
+    priceType: 'per person',
+    duration: '6 Days / 5 Nights',
+    rating: 5,
+    image: '/images/pkg-maldives.jpg',
+    badgeText: 'Honeymoon Special',
+    description: 'Overwater villa stay with private pool, all-inclusive dining, sunset dolphin cruise, and complimentary spa treatment.',
+    features: [
+      { icon: 'fas fa-hotel', text: '5-Star Overwater Resort' },
+      { icon: 'fas fa-utensils', text: 'All-Inclusive Meals & Drinks' },
+      { icon: 'fas fa-plane', text: 'Seaplane Transfers Included' },
+      { icon: 'fas fa-spa', text: 'Couples Spa Treatment' }
+    ]
+  },
+  {
+    _id: '2',
+    name: 'Swiss Alps Scenic Odyssey',
+    destination: 'Switzerland',
+    category: 'adventure',
+    price: 2499,
+    priceType: 'per person',
+    duration: '8 Days / 7 Nights',
+    rating: 5,
+    image: '/images/pkg-swiss.jpg',
+    badgeText: 'Best Seller',
+    description: 'Scenic train journeys on Glacier Express, Jungfraujoch top of Europe excursion, alpine hiking, and luxury mountain lodges.',
+    features: [
+      { icon: 'fas fa-train', text: 'Glacier Express First Class' },
+      { icon: 'fas fa-hotel', text: '4-Star Alpine Hotels' },
+      { icon: 'fas fa-ticket-alt', text: 'All Mountain Passes Included' },
+      { icon: 'fas fa-user-guide', text: 'Professional Mountain Guide' }
+    ]
+  },
+  {
+    _id: '3',
+    name: 'Romantic Bali & Tropical Villas',
+    destination: 'Bali, Indonesia',
+    category: 'romantic',
+    price: 1399,
+    priceType: 'per person',
+    duration: '7 Days / 6 Nights',
+    rating: 5,
+    image: '/images/pkg-bali-romance.jpg',
+    badgeText: 'Top Rated',
+    description: 'Private pool villa in Ubud, floating breakfast, beach club VIP passes in Seminyak, and sacred temple tours.',
+    features: [
+      { icon: 'fas fa-home', text: 'Private Pool Villa Stay' },
+      { icon: 'fas fa-coffee', text: 'Daily Floating Breakfast' },
+      { icon: 'fas fa-car', text: 'Private Chauffeur & Car' },
+      { icon: 'fas fa-umbrella-beach', text: 'VIP Beach Club Access' }
+    ]
+  }
+];
+
 const Packages = () => {
   const navigate = useNavigate();
-  const [packages, setPackages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [packages, setPackages] = useState(initialPackages);
 
   const handleBookClick = (targetUrl) => {
     const token = localStorage.getItem('token');
@@ -27,9 +86,7 @@ const Packages = () => {
           setPackages(res.data);
         }
       } catch (err) {
-        console.error('Error fetching packages:', err);
-      } finally {
-        setIsLoading(false);
+        console.error('Error fetching packages background sync:', err);
       }
     };
     fetchPackages();
@@ -54,47 +111,35 @@ const Packages = () => {
 
             return (
               <div key={pkg._id || pkg.id || displayTitle} className="col-lg-4 col-md-6">
-                <div className="package-card h-100 d-flex flex-column">
-                  <div className="pkg-img">
-                    <img src={pkg.image} alt={displayTitle} />
-                    {pkg.badgeText && <div className="pkg-badge">{pkg.badgeText}</div>}
-                  </div>
-                  <div className="pkg-body d-flex flex-column flex-grow-1">
-                    <div className="pkg-meta">
-                      <span><i className="fas fa-clock"></i> {displayDays}</span>
-                      <span><i className="fas fa-map-marker-alt"></i> {displayLocation}</span>
-                      <span><i className="fas fa-star" style={{ color: '#F59E0B' }}></i> {pkg.rating || '4.9'}</span>
-                    </div>
-                    <h4 className="pkg-title">{displayTitle}</h4>
-                    <p className="pkg-desc">{pkg.description}</p>
-                    {pkg.features && pkg.features.length > 0 && (
-                      <div className="pkg-features">
-                        {pkg.features.map((feature, idx) => {
-                          const featText = typeof feature === 'string' ? feature : feature.text;
-                          const featIcon = typeof feature === 'object' ? feature.icon : (pkg.featureIcons ? pkg.featureIcons[idx] : 'fas fa-check');
-                          return (
-                            <span key={idx} className="pkg-feature">
-                              <i className={featIcon}></i> {featText}
-                            </span>
-                          );
-                        })}
+                <div className="package-card h-100 d-flex flex-column shadow-sm rounded-4 overflow-hidden border-0 bg-white">
+                  <div className="pkg-img position-relative" style={{ height: '220px', overflow: 'hidden' }}>
+                    <img src={pkg.image} alt={displayTitle} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    {(pkg.badgeText || (pkg.badge && pkg.badge.text)) && (
+                      <div className="pkg-badge position-absolute top-0 start-0 m-3 px-3 py-1 bg-primary text-white rounded-pill small fw-semibold">
+                        {pkg.badgeText || pkg.badge.text}
                       </div>
                     )}
-                    <div className="pkg-footer gap-2 flex-wrap">
-                      <div className="pkg-price me-auto">
-                        <span>{displayPriceLabel}</span>
-                        <strong>{displayPrice}</strong>
+                  </div>
+                  <div className="pkg-body p-4 d-flex flex-column flex-grow-1">
+                    <div className="pkg-meta d-flex align-items-center justify-content-between text-muted small mb-2">
+                      <span><i className="fas fa-map-marker-alt text-primary me-1"></i> {displayLocation}</span>
+                      <span><i className="fas fa-clock text-primary me-1"></i> {displayDays}</span>
+                    </div>
+                    <h3 className="pkg-title h5 fw-bold font-playfair mb-2 text-dark">{displayTitle}</h3>
+                    <p className="pkg-desc text-secondary small mb-3 flex-grow-1" style={{ lineHeight: '1.6' }}>{pkg.description}</p>
+                    
+                    <div className="pkg-footer d-flex align-items-center justify-content-between pt-3 border-top mt-auto">
+                      <div className="pkg-price">
+                        <span className="price-val fs-4 fw-bold text-primary">{displayPrice}</span>
+                        <span className="price-unit text-muted small ms-1">/ {displayPriceLabel}</span>
                       </div>
-                      <Link to="/packages" className="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1-5 text-nowrap" style={{ fontSize: '0.8rem' }}>
-                        <i className="fas fa-info-circle me-1"></i>Details
-                      </Link>
                       <button 
-                        type="button"
-                        onClick={() => handleBookClick(`/contact?package=${encodeURIComponent(displayTitle)}&destination=${encodeURIComponent(displayLocation)}&price=${encodeURIComponent(displayPrice)}`)}
-                        className="btn-primary-custom text-nowrap border-0" 
-                        style={{ padding: '8px 18px', fontSize: '0.88rem' }}
+                        type="button" 
+                        onClick={() => handleBookClick(`/contact?package=${encodeURIComponent(displayTitle)}&price=${encodeURIComponent(displayPrice)}`)}
+                        className="btn btn-primary-custom rounded-pill px-3 py-2 text-white small fw-semibold border-0"
+                        style={{ background: 'linear-gradient(135deg, #0EA5E9, #0284C7)' }}
                       >
-                        Book Now
+                        Book Package
                       </button>
                     </div>
                   </div>
@@ -102,9 +147,6 @@ const Packages = () => {
               </div>
             );
           })}
-        </div>
-        <div className="text-center mt-5">
-          <Link to="/packages" className="btn-outline-primary"><i className="fas fa-suitcase me-2"></i> View All Packages</Link>
         </div>
       </div>
     </section>

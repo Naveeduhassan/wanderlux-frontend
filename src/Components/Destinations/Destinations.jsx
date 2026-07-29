@@ -4,10 +4,90 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
 
+const initialDestinations = [
+  {
+    _id: '1',
+    name: 'Paris',
+    location: 'France',
+    country: 'France',
+    image: '/images/dest-paris.jpg',
+    badge: { icon: 'fas fa-fire', text: 'Hot Deal' },
+    price: 899,
+    description: 'Experience the city of love with iconic landmarks, world-class cuisine, and romantic ambiance.',
+    reviews: 1245,
+    rating: 5,
+    duration: '7 Days'
+  },
+  {
+    _id: '2',
+    name: 'Dubai',
+    location: 'United Arab Emirates',
+    country: 'United Arab Emirates',
+    image: '/images/dest-dubai.jpg',
+    badge: { icon: 'fas fa-gem', text: 'Luxury' },
+    price: 1299,
+    description: 'Explore modern marvels, luxury shopping, desert safaris, and stunning architecture.',
+    reviews: 987,
+    rating: 5,
+    duration: '5 Days'
+  },
+  {
+    _id: '3',
+    name: 'Switzerland',
+    location: 'Switzerland',
+    country: 'Switzerland',
+    image: '/images/dest-switzerland.jpg',
+    badge: { icon: 'fas fa-mountain', text: 'Adventure' },
+    price: 1599,
+    description: 'Majestic Alps, pristine lakes, charming villages, and unforgettable scenic train journeys.',
+    reviews: 1543,
+    rating: 5,
+    duration: '8 Days'
+  },
+  {
+    _id: '4',
+    name: 'Istanbul, Turkey',
+    location: 'Turkey',
+    country: 'Turkey',
+    image: '/images/dest-turkey.jpg',
+    badge: { icon: 'fas fa-certificate', text: 'Best Value' },
+    price: 749,
+    description: 'Where East meets West. Rich history, vibrant bazaars, stunning mosques, and Bosphorus cruises.',
+    reviews: 823,
+    rating: 5,
+    duration: '6 Days'
+  },
+  {
+    _id: '5',
+    name: 'Bali',
+    location: 'Indonesia',
+    country: 'Indonesia',
+    image: '/images/dest-bali.jpg',
+    badge: { icon: 'fas fa-heart', text: 'Popular' },
+    price: 999,
+    description: 'Tropical paradise with lush rice terraces, sacred temples, vibrant culture, and pristine beaches.',
+    reviews: 1102,
+    rating: 5,
+    duration: '7 Days'
+  },
+  {
+    _id: '6',
+    name: 'Santorini',
+    location: 'Greece',
+    country: 'Greece',
+    image: '/images/dest-santorini.jpg',
+    badge: { icon: 'fas fa-sun', text: 'Romantic' },
+    price: 1199,
+    description: 'Iconic whitewashed buildings, blue-domed churches, dramatic caldera views, and stunning sunsets.',
+    reviews: 754,
+    rating: 5,
+    duration: '6 Days'
+  }
+];
+
 const Destinations = () => {
   const navigate = useNavigate();
-  const [destinations, setDestinations] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [destinations, setDestinations] = useState(initialDestinations);
 
   const handleBookClick = (targetUrl) => {
     const token = localStorage.getItem('token');
@@ -27,9 +107,7 @@ const Destinations = () => {
           setDestinations(res.data);
         }
       } catch (err) {
-        console.error('Error fetching destinations:', err);
-      } finally {
-        setIsLoading(false);
+        console.error('Error fetching destinations background sync:', err);
       }
     };
     fetchDestinations();
@@ -66,36 +144,49 @@ const Destinations = () => {
             const badgeText = dest.badgeText || (dest.badge && dest.badge.text) || '';
 
             return (
-              <div key={dest._id || dest.id || dest.name} className="col-lg-3 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
-                <div className="destination-card h-100 d-flex flex-column">
-                  <div className="card-img-wrap">
-                    <img src={dest.image} alt={dest.name} />
+              <div key={dest._id || dest.id || dest.name} className="col-lg-4 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
+                <div className="destination-card h-100 d-flex flex-column shadow-sm rounded-4 overflow-hidden border-0" style={{ background: '#FFFFFF' }}>
+                  <div className="card-img-wrap position-relative" style={{ height: '240px', overflow: 'hidden' }}>
+                    <img src={dest.image} alt={dest.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     {badgeText && (
-                      <div className="card-badge">
-                        <i className={badgeIcon}></i> {badgeText}
+                      <div className="card-badge position-absolute top-0 start-0 m-3 px-3 py-1.5 bg-primary text-white rounded-pill small fw-semibold shadow-sm">
+                        <i className={`${badgeIcon} me-1`}></i> {badgeText}
                       </div>
                     )}
-                    <div className="price-tag">From {displayPrice}</div>
-                  </div>
-                  <div className="card-body d-flex flex-column flex-grow-1">
-                    <div className="card-location"><i className="fas fa-map-marker-alt"></i> {dest.country}</div>
-                    <h3 className="card-title">{dest.name}</h3>
-                    <p className="card-desc">{dest.description}</p>
-                    <div className="card-rating">
-                      {renderStars(dest.rating || 5)}
-                      <span className="count">({(dest.reviews || 40).toLocaleString()} reviews)</span>
+                    <div className="price-tag position-absolute bottom-0 end-0 m-3 px-3 py-1 bg-dark bg-opacity-75 text-white rounded-pill fw-bold small">
+                      From {displayPrice}
                     </div>
-                    <div className="card-footer-custom gap-2 flex-wrap">
-                      <Link to="/destinations" className="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1-5 text-nowrap" style={{ fontSize: '0.8rem' }}>
-                        <i className="fas fa-info-circle me-1"></i>Details
-                      </Link>
+                  </div>
+                  <div className="card-body p-4 d-flex flex-column flex-grow-1">
+                    <div className="card-location text-primary small fw-semibold mb-1">
+                      <i className="fas fa-map-marker-alt me-1"></i> {dest.country}
+                    </div>
+                    <h3 className="card-title h5 fw-bold font-playfair mb-2" style={{ color: '#0F172A' }}>{dest.name}</h3>
+                    <p className="card-desc text-secondary small mb-3 flex-grow-1" style={{ lineHeight: '1.6' }}>{dest.description}</p>
+                    
+                    <div className="card-rating d-flex align-items-center justify-content-between mb-3 pt-2 border-top">
+                      <div className="d-flex align-items-center gap-1 text-warning small">
+                        {renderStars(dest.rating || 5)}
+                        <span className="fw-bold text-dark ms-1">{dest.rating || '5.0'}</span>
+                      </div>
+                      <span className="count text-muted small">({(dest.reviews || 40).toLocaleString()} reviews)</span>
+                    </div>
+
+                    <div className="d-flex gap-2">
+                      <button 
+                        type="button" 
+                        onClick={() => navigate(`/destinations?search=${encodeURIComponent(dest.name)}`)} 
+                        className="btn btn-outline-secondary flex-fill rounded-pill py-2 small fw-semibold d-flex align-items-center justify-content-center gap-1"
+                      >
+                        <i className="fas fa-info-circle"></i> View Details
+                      </button>
                       <button 
                         type="button"
                         onClick={() => handleBookClick(`/contact?destination=${encodeURIComponent(dest.name)}&price=${encodeURIComponent(displayPrice)}`)}
-                        className="btn-outline-primary text-nowrap border-0" 
-                        style={{ padding: '6px 16px', fontSize: '0.85rem' }}
+                        className="btn btn-primary-custom flex-fill rounded-pill py-2 text-white small fw-semibold d-flex align-items-center justify-content-center gap-1 border-0"
+                        style={{ background: 'linear-gradient(135deg, #0EA5E9, #0284C7)' }}
                       >
-                        Book Now
+                        <i className="fas fa-paper-plane"></i> Book Now
                       </button>
                     </div>
                   </div>
@@ -103,9 +194,6 @@ const Destinations = () => {
               </div>
             );
           })}
-        </div>
-        <div className="text-center mt-5">
-          <Link to="/destinations" className="btn-accent"><i className="fas fa-map-marked-alt me-2"></i> View All Destinations</Link>
         </div>
       </div>
     </section>
