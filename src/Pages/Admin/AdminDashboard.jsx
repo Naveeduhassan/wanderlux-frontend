@@ -142,20 +142,27 @@ function AdminDashboard() {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const [destRes, pkgRes, bookingRes, galRes] = await Promise.all([
+      const results = await Promise.allSettled([
         api.get('/destinations/public'),
         api.get('/packages/public'),
         api.get('/bookings'),
         api.get('/gallery/public')
       ]);
 
-      setDestinations(destRes.data);
-      setPackages(pkgRes.data);
-      setBookings(bookingRes.data);
-      setGallery(galRes.data);
+      if (results[0].status === 'fulfilled' && results[0].value.data) {
+        setDestinations(results[0].value.data);
+      }
+      if (results[1].status === 'fulfilled' && results[1].value.data) {
+        setPackages(results[1].value.data);
+      }
+      if (results[2].status === 'fulfilled' && results[2].value.data) {
+        setBookings(results[2].value.data);
+      }
+      if (results[3].status === 'fulfilled' && results[3].value.data) {
+        setGallery(results[3].value.data);
+      }
     } catch (error) {
       console.error('Error fetching admin data:', error);
-      toast.error('Failed to load dashboard data');
     } finally {
       setIsLoading(false);
     }
