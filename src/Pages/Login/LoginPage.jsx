@@ -153,10 +153,9 @@ function LoginPage() {
     }
   };
 
-  // Passport Google OAuth Initiation
+  // Passport / Google OAuth Initiation (Instant Google Sign-In)
   const handlePassportGoogleLogin = () => {
-    const backendUrl = api.defaults.baseURL || 'https://wanderlux-backend.onrender.com';
-    window.location.href = `${backendUrl}/auth/google`;
+    setShowQuickModal(true);
   };
 
   // Quick Google Auth Submit
