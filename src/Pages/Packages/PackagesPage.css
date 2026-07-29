@@ -1,0 +1,17 @@
+/* PACKAGES PAGE STYLES */
+.package-card {
+  transition: all 0.3s ease;
+}
+
+.package-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+}
+
+.pkg-img img {
+  transition: transform 0.5s ease;
+}
+
+.package-card:hover .pkg-img img {
+  transform: scale(1.05);
+}

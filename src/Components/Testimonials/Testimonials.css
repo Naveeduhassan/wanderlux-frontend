@@ -1,0 +1,33 @@
+/* TESTIMONIALS COMPONENT STYLES */
+.testimonial-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+  position: relative;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-card .quote-icon {
+  font-size: 3rem;
+  color: #0EA5E9;
+  opacity: 0.15;
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-family: Georgia, serif;
+}
+
+.testimonial-card .reviewer img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #BAE6FD;
+}
