@@ -57,8 +57,11 @@ function Navbar() {
     return () => window.removeEventListener('storage', checkUser);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     closeMobileNavbar();
+    try {
+      await api.post('/auth/logout').catch(() => null);
+    } catch (e) {}
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setUser(null);
