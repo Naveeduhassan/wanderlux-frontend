@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import PageTransition from '../../Components/PageTransition/PageTransition';
 import { 
   LayoutDashboard, 
   MapPin, 
@@ -581,7 +582,8 @@ function AdminDashboard() {
   }
 
   return (
-    <div className="min-vh-100 d-flex flex-column" style={{ paddingTop: '90px', background: '#F8FAFC' }}>
+    <PageTransition>
+      <div className="min-vh-100 d-flex flex-column" style={{ paddingTop: '90px', background: '#F8FAFC' }}>
       
       {/* MAIN CONTAINER */}
       <div className="container-fluid flex-grow-1 px-4 py-4">
@@ -1562,6 +1564,7 @@ function AdminDashboard() {
       </AnimatePresence>
 
     </div>
+    </PageTransition>
   );
 }
 

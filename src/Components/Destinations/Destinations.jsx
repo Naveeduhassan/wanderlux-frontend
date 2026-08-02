@@ -1,6 +1,7 @@
 import './Destinations.css';
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
 
@@ -85,6 +86,24 @@ const initialDestinations = [
   }
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 35 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 const Destinations = () => {
   const navigate = useNavigate();
   const [destinations, setDestinations] = useState(initialDestinations);
@@ -131,23 +150,51 @@ const Destinations = () => {
   return (
     <section className="py-5" id="destinations" aria-label="Popular destinations">
       <div className="container">
-        <div className="section-header center">
+        <motion.div 
+          className="section-header center"
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.55 }}
+        >
           <span className="section-label"><i className="fas fa-globe-americas me-2"></i>Destinations</span>
-          <h2 className="section-title reveal visible" style={{ opacity: 1, transform: 'none' }}>Top Travel <span>Destinations</span></h2>
+          <h2 className="section-title">Top Travel <span>Destinations</span></h2>
           <div className="section-divider"></div>
-          <p className="section-subtitle reveal visible" style={{ opacity: 1, transform: 'none' }}>Discover the world's most breathtaking destinations handpicked by travel experts</p>
-        </div>
-        <div className="row g-4">
+          <p className="section-subtitle">Discover the world's most breathtaking destinations handpicked by travel experts</p>
+        </motion.div>
+
+        <motion.div 
+          className="row g-4"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-50px' }}
+        >
           {destinations.map((dest) => {
             const displayPrice = typeof dest.price === 'number' ? `$${dest.price}` : dest.price;
             const badgeIcon = dest.badgeIcon || (dest.badge && dest.badge.icon) || 'fas fa-fire';
             const badgeText = dest.badgeText || (dest.badge && dest.badge.text) || '';
 
             return (
-              <div key={dest._id || dest.id || dest.name} className="col-lg-4 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
-                <div className="destination-card h-100 d-flex flex-column shadow-sm rounded-4 overflow-hidden border-0" style={{ background: '#FFFFFF' }}>
+              <motion.div 
+                key={dest._id || dest.id || dest.name} 
+                variants={cardVariants} 
+                className="col-lg-4 col-md-6"
+              >
+                <motion.div 
+                  whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(14, 165, 233, 0.15)' }}
+                  transition={{ duration: 0.3 }}
+                  className="destination-card h-100 d-flex flex-column shadow-sm rounded-4 overflow-hidden border-0" 
+                  style={{ background: '#FFFFFF' }}
+                >
                   <div className="card-img-wrap position-relative" style={{ height: '240px', overflow: 'hidden' }}>
-                    <img src={dest.image} alt={dest.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <motion.img 
+                      whileHover={{ scale: 1.08 }}
+                      transition={{ duration: 0.4 }}
+                      src={dest.image} 
+                      alt={dest.name} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                    />
                     {badgeText && (
                       <div className="card-badge position-absolute top-0 start-0 m-3 px-3 py-1.5 bg-primary text-white rounded-pill small fw-semibold shadow-sm">
                         <i className={`${badgeIcon} me-1`}></i> {badgeText}
@@ -173,28 +220,32 @@ const Destinations = () => {
                     </div>
 
                     <div className="d-flex gap-2">
-                      <button 
+                      <motion.button 
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         type="button" 
                         onClick={() => navigate(`/destinations?search=${encodeURIComponent(dest.name)}`)} 
                         className="btn btn-outline-secondary flex-fill rounded-pill py-2 small fw-semibold d-flex align-items-center justify-content-center gap-1"
                       >
                         <i className="fas fa-info-circle"></i> View Details
-                      </button>
-                      <button 
+                      </motion.button>
+                      <motion.button 
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         type="button"
                         onClick={() => handleBookClick(`/contact?destination=${encodeURIComponent(dest.name)}&price=${encodeURIComponent(displayPrice)}`)}
                         className="btn btn-primary-custom flex-fill rounded-pill py-2 text-white small fw-semibold d-flex align-items-center justify-content-center gap-1 border-0"
                         style={{ background: 'linear-gradient(135deg, #0EA5E9, #0284C7)' }}
                       >
                         <i className="fas fa-paper-plane"></i> Book Now
-                      </button>
+                      </motion.button>
                     </div>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

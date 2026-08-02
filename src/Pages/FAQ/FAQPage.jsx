@@ -1,6 +1,8 @@
 import './FAQPage.css';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import PageTransition from '../../Components/PageTransition/PageTransition';
 
 const FAQPage = () => {
   const [openFaqId, setOpenFaqId] = useState(1); // Q1 is open by default
@@ -151,7 +153,7 @@ const FAQPage = () => {
   };
 
   return (
-    <>
+    <PageTransition>
       {/* PAGE HERO */}
       <section
         className="page-hero"
@@ -189,24 +191,24 @@ const FAQPage = () => {
             <span className="section-label">
               <i className="fas fa-question-circle me-2"></i>FAQ
             </span>
-            <h2 className="section-title reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <h2 className="section-title">
               Got <span>Questions?</span>
             </h2>
             <div className="section-divider"></div>
-            <p className="section-subtitle reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <p className="section-subtitle">
               We've answered the most common questions to help you plan with confidence
             </p>
           </div>
           <div className="row g-4">
             {/* Left Column: FAQ 1–8 */}
-            <div className="col-lg-6 reveal-left visible" style={{ opacity: 1, transform: 'none' }}>
+            <div className="col-lg-6">
               <div className="faq-accordion accordion">
                 {leftFaqs.map(renderFaqItem)}
               </div>
             </div>
 
             {/* Right Column: FAQ 9–15 */}
-            <div className="col-lg-6 reveal-right visible" style={{ opacity: 1, transform: 'none' }}>
+            <div className="col-lg-6">
               <div className="accordion">
                 {rightFaqs.map(renderFaqItem)}
               </div>
@@ -219,13 +221,13 @@ const FAQPage = () => {
       <section className="cta-section" aria-label="Call to action">
         <div className="container">
           <div className="cta-content">
-            <h2 className="reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <h2>
               Still Have <span style={{ color: '#0EA5E9' }}>Questions?</span>
             </h2>
-            <p className="reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <p>
               Our friendly travel consultants are available to help you plan every detail of your perfect trip.
             </p>
-            <div className="d-flex flex-wrap gap-3 justify-content-center reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <div className="d-flex flex-wrap gap-3 justify-content-center">
               <Link to="/contact" className="btn-primary-custom">
                 <i className="fas fa-envelope me-2"></i>Contact Our Team
               </Link>
@@ -236,7 +238,7 @@ const FAQPage = () => {
           </div>
         </div>
       </section>
-    </>
+    </PageTransition>
   );
 };
 

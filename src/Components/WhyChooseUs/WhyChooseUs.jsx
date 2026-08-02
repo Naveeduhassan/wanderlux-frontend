@@ -1,4 +1,24 @@
 import './WhyChooseUs.css';
+import { motion } from 'framer-motion';
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 const WhyChooseUs = () => {
   const features = [
     {
@@ -36,23 +56,46 @@ const WhyChooseUs = () => {
   return (
     <section className="bg-alt py-5" aria-label="Why choose us">
       <div className="container">
-        <div className="section-header center">
+        <motion.div 
+          className="section-header center"
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.55 }}
+        >
           <span className="section-label"><i className="fas fa-award me-2"></i>Why Us</span>
-          <h2 className="section-title reveal visible" style={{ opacity: 1, transform: 'none' }}>Why Thousands Of Travelers <span>Choose Us</span></h2>
+          <h2 className="section-title">Why Thousands Of Travelers <span>Choose Us</span></h2>
           <div className="section-divider"></div>
-          <p className="section-subtitle reveal visible" style={{ opacity: 1, transform: 'none' }}>We deliver exceptional travel experiences backed by years of expertise and dedication</p>
-        </div>
-        <div className="row g-4">
+          <p className="section-subtitle">We deliver exceptional travel experiences backed by years of expertise and dedication</p>
+        </motion.div>
+
+        <motion.div 
+          className="row g-4"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-50px' }}
+        >
           {features.map((feature, index) => (
-            <div key={index} className="col-lg-4 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
-              <div className="feature-card">
-                <div className="feature-icon"><i className={feature.icon}></i></div>
+            <motion.div key={index} variants={itemVariants} className="col-lg-4 col-md-6">
+              <motion.div 
+                whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(14, 165, 233, 0.12)' }}
+                transition={{ duration: 0.3 }}
+                className="feature-card h-100"
+              >
+                <motion.div 
+                  whileHover={{ scale: 1.15, rotate: 6 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                  className="feature-icon"
+                >
+                  <i className={feature.icon}></i>
+                </motion.div>
                 <h4>{feature.title}</h4>
                 <p>{feature.description}</p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

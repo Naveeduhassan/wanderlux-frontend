@@ -4,6 +4,7 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { validateEmail, validatePhone, validateTravelersCount, validateTravelDate } from '../../utils/validation';
 import toast from 'react-hot-toast';
+import PageTransition from '../../Components/PageTransition/PageTransition';
 
 const ContactPage = () => {
   const [searchParams] = useSearchParams();
@@ -155,7 +156,7 @@ const ContactPage = () => {
   };
 
   return (
-    <>
+    <PageTransition>
       {/* PAGE HERO */}
       <section
         className="page-hero"
@@ -472,7 +473,7 @@ const ContactPage = () => {
           </div>
         </div>
       </section>
-    </>
+    </PageTransition>
   );
 };
 

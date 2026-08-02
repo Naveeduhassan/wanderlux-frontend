@@ -1,8 +1,28 @@
 import './PackagesPage.css';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { fetchWithCache } from '../../services/apiCache';
 import toast from 'react-hot-toast';
+import PageTransition from '../../Components/PageTransition/PageTransition';
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 35 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
 
 const initialPackagesFallback = [
   {
@@ -105,7 +125,7 @@ const PackagesPage = () => {
     : packages.filter(p => p.category === selectedCategory || (p.badgeText || '').toLowerCase().includes(selectedCategory));
 
   return (
-    <>
+    <PageTransition>
       {/* PAGE HERO */}
       <section className="page-hero" style={{ backgroundImage: "url('/images/hero-packages.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }} aria-label="Packages hero">
         <div className="hero-overlay"></div>
@@ -129,7 +149,7 @@ const PackagesPage = () => {
         <div className="container">
           <div className="section-header center mb-4">
             <span className="section-label"><i className="fas fa-suitcase me-2"></i>Best Deals</span>
-            <h2 className="section-title reveal visible" style={{ opacity: 1, transform: 'none' }}>Choose Your <span>Ideal Package</span></h2>
+            <h2 className="section-title">Choose Your <span>Ideal Package</span></h2>
             <div className="section-divider"></div>
           </div>
 
@@ -153,7 +173,13 @@ const PackagesPage = () => {
               <p className="text-muted mt-3">Loading packages...</p>
             </div>
           ) : (
-            <div className="row g-4">
+            <motion.div 
+              className="row g-4"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-50px' }}
+            >
               {filteredPackages.map((pkg) => {
                 const displayTitle = pkg.name || pkg.title;
                 const displayLocation = pkg.destination || pkg.location;
@@ -210,7 +236,7 @@ const PackagesPage = () => {
                   </div>
                 );
               })}
-            </div>
+            </motion.div>
           )}
         </div>
       </section>
@@ -233,7 +259,7 @@ const PackagesPage = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* HERO BANNER */}
-            <div className="position-relative" style={{ height: '280px' }}>
+            <div className="position-relative" style={{ height: '260px' }}>
               <img 
                 src={selectedPkgModal.image} 
                 alt={selectedPkgModal.name || selectedPkgModal.title} 
@@ -250,29 +276,37 @@ const PackagesPage = () => {
               </button>
 
               <div className="position-absolute bottom-0 start-0 p-4 text-white">
-                <span className="badge bg-info text-dark px-3 py-1.5 rounded-pill mb-2 fw-semibold">
-                  <i className="fas fa-map-marker-alt me-1"></i> {selectedPkgModal.location || selectedPkgModal.destination}
-                </span>
+                {(selectedPkgModal.badgeText || (selectedPkgModal.badge && selectedPkgModal.badge.text)) && (
+                  <span className="badge bg-info text-dark px-3 py-1.5 rounded-pill mb-2 fw-semibold">
+                    {selectedPkgModal.badgeText || selectedPkgModal.badge.text}
+                  </span>
+                )}
                 <h2 className="mb-1 fw-bold font-playfair text-white fs-2">{selectedPkgModal.name || selectedPkgModal.title}</h2>
-                <small className="text-white-50"><i className="fas fa-star text-warning me-1"></i> {selectedPkgModal.rating || '4.9'} Verified Tour Package</small>
+                <small className="text-white-50"><i className="fas fa-map-marker-alt me-1"></i> {selectedPkgModal.destination || selectedPkgModal.location}</small>
               </div>
             </div>
 
             {/* CONTENT BODY */}
             <div className="p-4">
-              {/* PRICE & DURATION BAR */}
+              {/* RATING & PRICE BAR */}
               <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 pb-3 border-bottom">
-                <div>
+                <div className="d-flex align-items-center gap-2">
+                  <div className="d-flex text-warning fs-5">
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                  </div>
+                  <span className="fw-bold text-dark fs-5 ms-1">{selectedPkgModal.rating || '5.0'}</span>
+                  <span className="text-muted small">({(selectedPkgModal.reviews || 85).toLocaleString()} Verified Bookings)</span>
+                </div>
+                <div className="text-end">
                   <span className="text-muted small d-block">Package Price</span>
                   <span className="fs-3 fw-bold text-primary" style={{ color: '#0EA5E9' }}>
                     {typeof selectedPkgModal.price === 'number' ? `$${selectedPkgModal.price}` : selectedPkgModal.price}
                   </span>
-                  <small className="text-muted ms-2">/ Per traveler</small>
-                </div>
-                <div className="text-end">
-                  <span className="badge bg-light text-dark border px-3 py-2 rounded-pill fs-6 fw-semibold">
-                    <i className="fas fa-clock text-primary me-1.5"></i> {selectedPkgModal.duration || selectedPkgModal.days}
-                  </span>
+                  <small className="text-muted d-block" style={{ fontSize: '0.75rem' }}>/ {selectedPkgModal.priceType || 'per person'}</small>
                 </div>
               </div>
 
@@ -358,7 +392,7 @@ const PackagesPage = () => {
           </div>
         </div>
       )}
-    </>
+    </PageTransition>
   );
 };
 

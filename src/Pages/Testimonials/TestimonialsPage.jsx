@@ -1,5 +1,25 @@
 import './TestimonialsPage.css';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import PageTransition from '../../Components/PageTransition/PageTransition';
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
 
 const TestimonialsPage = () => {
   const testimonials = [
@@ -126,7 +146,7 @@ const TestimonialsPage = () => {
   };
 
   return (
-    <>
+    <PageTransition>
       {/* PAGE HERO */}
       <section
         className="page-hero"
@@ -164,18 +184,28 @@ const TestimonialsPage = () => {
             <span className="section-label">
               <i className="fas fa-quote-left me-2"></i>Reviews
             </span>
-            <h2 className="section-title reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <h2 className="section-title">
               What Our <span>Travelers Say</span>
             </h2>
             <div className="section-divider"></div>
-            <p className="section-subtitle reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <p className="section-subtitle">
               Genuine feedback from our wonderful community of globetrotters
             </p>
           </div>
-          <div className="row g-4">
+          <motion.div 
+            className="row g-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+          >
             {testimonials.map((test) => (
-              <div key={test.id} className="col-lg-4 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
-                <div className="testimonial-card">
+              <motion.div key={test.id} variants={itemVariants} className="col-lg-4 col-md-6">
+                <motion.div 
+                  whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(14, 165, 233, 0.12)' }}
+                  transition={{ duration: 0.3 }}
+                  className="testimonial-card"
+                >
                   {renderStars(test.rating)}
                   <p className="review-text">{test.text}</p>
                   <div className="reviewer">
@@ -185,10 +215,10 @@ const TestimonialsPage = () => {
                       <span>{test.location} &bull; {test.trip}</span>
                     </div>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -199,13 +229,13 @@ const TestimonialsPage = () => {
             <span className="section-label">
               <i className="fas fa-trophy me-2"></i>Achievements
             </span>
-            <h2 className="section-title reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <h2 className="section-title">
               Our Numbers <span>Speak For Themselves</span>
             </h2>
             <div className="section-divider"></div>
           </div>
           <div className="row g-4 text-center">
-            <div className="col-lg-3 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <div className="col-lg-3 col-md-6">
               <div className="stat-card p-4 bg-white rounded-4 shadow-sm">
                 <div className="stat-icon mb-3" style={{ fontSize: '2.5rem', color: '#0EA5E9' }}>
                   <i className="fas fa-users"></i>
@@ -214,7 +244,7 @@ const TestimonialsPage = () => {
                 <div className="stat-label text-muted">Happy Travelers</div>
               </div>
             </div>
-            <div className="col-lg-3 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <div className="col-lg-3 col-md-6">
               <div className="stat-card p-4 bg-white rounded-4 shadow-sm">
                 <div className="stat-icon mb-3" style={{ fontSize: '2.5rem', color: '#0EA5E9' }}>
                   <i className="fas fa-globe-americas"></i>
@@ -223,7 +253,7 @@ const TestimonialsPage = () => {
                 <div className="stat-label text-muted">Destinations Covered</div>
               </div>
             </div>
-            <div className="col-lg-3 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <div className="col-lg-3 col-md-6">
               <div className="stat-card p-4 bg-white rounded-4 shadow-sm">
                 <div className="stat-icon mb-3" style={{ fontSize: '2.5rem', color: '#0EA5E9' }}>
                   <i className="fas fa-star"></i>
@@ -232,7 +262,7 @@ const TestimonialsPage = () => {
                 <div className="stat-label text-muted">Average Rating</div>
               </div>
             </div>
-            <div className="col-lg-3 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <div className="col-lg-3 col-md-6">
               <div className="stat-card p-4 bg-white rounded-4 shadow-sm">
                 <div className="stat-icon mb-3" style={{ fontSize: '2.5rem', color: '#0EA5E9' }}>
                   <i className="fas fa-calendar-check"></i>
@@ -249,13 +279,13 @@ const TestimonialsPage = () => {
       <section className="cta-section" aria-label="Call to action">
         <div className="container">
           <div className="cta-content">
-            <h2 className="reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <h2>
               Join Thousands Of <span style={{ color: '#0EA5E9' }}>Happy Travelers</span>
             </h2>
-            <p className="reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <p>
               Your next incredible travel story is waiting to be written. Let WanderLux make it unforgettable.
             </p>
-            <div className="d-flex flex-wrap gap-3 justify-content-center reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <div className="d-flex flex-wrap gap-3 justify-content-center">
               <Link to="/packages" className="btn-primary-custom">
                 <i className="fas fa-suitcase-rolling me-2"></i>Explore Packages
               </Link>
@@ -266,7 +296,7 @@ const TestimonialsPage = () => {
           </div>
         </div>
       </section>
-    </>
+    </PageTransition>
   );
 };
 

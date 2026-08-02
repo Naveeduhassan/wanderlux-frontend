@@ -1,7 +1,9 @@
 import './GalleryPage.css';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { fetchWithCache } from '../../services/apiCache';
+import PageTransition from '../../Components/PageTransition/PageTransition';
 
 const initialGalleryFallback = [
   { title: 'Maldives Crystal Waters', category: 'beaches', categoryLabel: 'Beaches', image: '/images/pkg-maldives.jpg' },
@@ -15,6 +17,24 @@ const initialGalleryFallback = [
   { title: 'Private Villa Pool', category: 'hotels', categoryLabel: 'Hotels', image: '/images/pkg-bali-romance.jpg' },
   { title: 'Tokyo Streets', category: 'cities', categoryLabel: 'Cities', image: '/images/dest-japan.jpg' }
 ];
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+  },
+};
 
 const GalleryPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -75,7 +95,7 @@ const GalleryPage = () => {
   ];
 
   return (
-    <>
+    <PageTransition>
       {/* PAGE HERO */}
       <section
         className="page-hero"
@@ -324,7 +344,7 @@ const GalleryPage = () => {
           </div>
         </div>
       </section>
-    </>
+    </PageTransition>
   );
 };
 

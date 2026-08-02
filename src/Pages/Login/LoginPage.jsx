@@ -5,6 +5,7 @@ import api from '../../services/api';
 import { validateEmail } from '../../utils/validation';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import PageTransition from '../../Components/PageTransition/PageTransition';
 import { 
   Lock, Mail, Eye, EyeOff, ArrowRight, ShieldCheck, User, UserPlus, 
   LogIn, Laptop, RefreshCw, Star, CheckCircle2, Sparkles, X, Globe
@@ -190,7 +191,8 @@ function LoginPage() {
   };
 
   return (
-    <div className="auth-page-wrapper">
+    <PageTransition>
+      <div className="auth-page-wrapper">
       {/* Ambient background glows */}
       <div className="auth-ambient-glow-1"></div>
       <div className="auth-ambient-glow-2"></div>
@@ -610,6 +612,7 @@ function LoginPage() {
         )}
       </AnimatePresence>
     </div>
+    </PageTransition>
   );
 }
 

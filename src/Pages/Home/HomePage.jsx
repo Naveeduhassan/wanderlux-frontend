@@ -8,10 +8,11 @@ import Stats from '../../Components/Stats/Stats';
 import Testimonials from '../../Components/Testimonials/Testimonials';
 import CTA from '../../Components/CTA/CTA';
 import Newsletter from '../../Components/Newsletter/Newsletter';
+import PageTransition from '../../Components/PageTransition/PageTransition';
 
 const HomePage = () => {
   return (
-    <>
+    <PageTransition>
       <Hero />
       <About />
       <Destinations />
@@ -21,7 +22,7 @@ const HomePage = () => {
       <Testimonials />
       <CTA />
       <Newsletter />
-    </>
+    </PageTransition>
   );
 };
 

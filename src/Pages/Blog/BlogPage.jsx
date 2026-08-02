@@ -1,5 +1,25 @@
 import './BlogPage.css';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import PageTransition from '../../Components/PageTransition/PageTransition';
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
 
 const BlogPage = () => {
   const blogs = [
@@ -25,79 +45,53 @@ const BlogPage = () => {
     },
     {
       id: 3,
-      title: 'Complete Packing Guide for Long Trips',
-      category: 'Travel Tips',
+      title: 'Essential Packing Hacks for Travelers',
+      category: 'Guides',
       image: '/images/blog-packing.jpg',
-      author: 'Emma Walsh',
-      date: 'Feb 20, 2026',
+      author: 'Elena Rostova',
+      date: 'Mar 12, 2026',
       readTime: '5 min read',
-      excerpt: "Packing for a long trip is an art form that takes practice to master. Too much and you're weighed down; too little and you'll be shopping in every city. Our comprehensive packing guide walks you through everything from choosing the right luggage to creating a foolproof checklist that ensures you never forget the essentials again."
+      excerpt: "Packing efficiently can mean the difference between a stress-free trip and a chaotic journey. Whether you're embarking on a weekend getaway or a month-long expedition across multiple continents, our comprehensive packing hacks will help you pack smarter, lighter, and more organized than ever before."
     },
     {
       id: 4,
-      title: 'Best Honeymoon Destinations 2026',
-      category: 'Romance',
-      image: '/images/dest-maldives.jpg',
-      author: 'Maria Costa',
-      date: 'Mar 5, 2026',
+      title: 'How To Plan The Perfect Honeymoon',
+      category: 'Planning',
+      image: 'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=600&auto=format&fit=crop&q=80',
+      author: 'Ahmed Khan',
+      date: 'Apr 20, 2026',
       readTime: '5 min read',
-      excerpt: "Your honeymoon should be the most magical trip of your life, and choosing the right destination sets the tone for your journey together. From the overwater bungalows of the Maldives to the cliffside villages of Santorini, we've curated the most breathtakingly romantic destinations to help you begin your forever in style."
+      excerpt: "Your honeymoon should be the trip of a lifetime – a romantic celebration of your new journey together. From choosing the perfect destination to balancing relaxation with adventure, our ultimate honeymoon planning guide walks you through every step of crafting a stress-free, unforgettable romantic escape."
     },
     {
       id: 5,
-      title: "The Solo Traveler's Complete Guide",
-      category: 'Solo Travel',
+      title: 'Solo Travel: Tips for First-Timers',
+      category: 'Tips',
       image: '/images/blog-solo.jpg',
-      author: 'Alex Kim',
-      date: 'Mar 18, 2026',
+      author: 'Sara Khan',
+      date: 'May 5, 2026',
       readTime: '5 min read',
-      excerpt: "Solo travel is one of the most empowering experiences a person can have. It builds confidence, independence, and a profound sense of self-discovery. Whether you're a first-time solo adventurer or a seasoned independent explorer, this guide covers safety, social strategies, budgeting, and the best solo-friendly destinations for every personality."
+      excerpt: "Embarking on your first solo trip can feel equal parts thrilling and intimidating. Stepping out of your comfort zone to explore the world on your own terms is one of the most empowering experiences a traveler can have. Here's everything you need to know to stay safe, make friends, and thrive as a solo traveler."
     },
     {
       id: 6,
-      title: 'Family Vacation Ideas That Everyone Loves',
-      category: 'Family',
-      image: '/images/dest-bali.jpg',
-      author: 'David Santos',
-      date: 'Apr 2, 2026',
+      title: 'Sustainable Tourism: Travel Responsibly',
+      category: 'Eco Travel',
+      image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&auto=format&fit=crop&q=80',
+      author: 'Hamza Siddiqui',
+      date: 'Jun 18, 2026',
       readTime: '5 min read',
-      excerpt: "Planning a family vacation that genuinely excites everyone from toddlers to grandparents is a true challenge. The key is finding destinations that offer a rich mix of activities, educational experiences, and downtime. We've handpicked our favorite family-friendly destinations and activities that create lifelong memories for all ages."
-    },
-    {
-      id: 7,
-      title: 'Adventure Travel: Pushing Your Limits',
-      category: 'Adventure',
-      image: '/images/pkg-swiss.jpg',
-      author: 'Tom Reed',
-      date: 'Apr 15, 2026',
-      readTime: '5 min read',
-      excerpt: "Adventure travel isn't just about the physical thrill – it's about confronting your fears, discovering hidden strengths, and experiencing the world in a raw and unfiltered way. From trekking through the Himalayas to white-water rafting the Amazon, we explore the world's most exhilarating adventures for thrill-seekers of every level."
-    },
-    {
-      id: 8,
-      title: 'Best Time to Visit Europe: Month by Month',
-      category: 'Europe',
-      image: '/images/dest-paris.jpg',
-      author: 'Sophie Laurent',
-      date: 'May 1, 2026',
-      readTime: '5 min read',
-      excerpt: "Europe is a year-round destination but knowing the best time to visit each country can make an enormous difference to your experience. From the tulip fields of Holland in spring to the Christmas markets of Germany in winter, each month brings its own unique magic. Our month-by-month guide helps you plan the perfect European getaway."
+      excerpt: "As global travel expands, so does our collective responsibility to protect the destinations we visit. Responsible travel isn't about giving up adventures – it's about making conscious choices that support local communities, preserve fragile ecosystems, and ensure future generations can enjoy the beauty of our planet."
     }
   ];
 
-  const handleSubscribeSubmit = (e) => {
-    e.preventDefault();
-    alert('Thank you for subscribing! We will keep you updated with the latest travel stories.');
-    e.target.reset();
-  };
-
   return (
-    <>
+    <PageTransition>
       {/* PAGE HERO */}
       <section
         className="page-hero"
         style={{
-          backgroundImage: "url('/images/hero-packages.jpg')",
+          backgroundImage: "url('/images/hero-main.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -130,79 +124,95 @@ const BlogPage = () => {
             <span className="section-label">
               <i className="fas fa-pen-nib me-2"></i>Latest Posts
             </span>
-            <h2 className="section-title reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <h2 className="section-title">
               Travel Stories &amp; <span>Expert Guides</span>
             </h2>
             <div className="section-divider"></div>
-            <p className="section-subtitle reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <p className="section-subtitle">
               Stay inspired with tips, guides, and insights from our travel experts
             </p>
           </div>
-          <div className="row g-4">
-            {blogs.map((blog) => (
-              <div key={blog.id} className="col-lg-4 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
-                <article className="blog-card">
-                  <div className="blog-img">
-                    <img src={blog.image} alt={blog.title} loading="lazy" />
-                    <div className="blog-category">{blog.category}</div>
-                  </div>
-                  <div className="blog-body">
-                    <div className="blog-meta">
-                      <span><i className="fas fa-user me-1"></i>{blog.author}</span>
-                      <span><i className="fas fa-calendar me-1"></i>{blog.date}</span>
-                      <span><i className="fas fa-clock me-1"></i>{blog.readTime}</span>
+
+          <motion.div 
+            className="row g-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+          >
+            {blogs.map((post) => (
+              <motion.div key={post.id} variants={itemVariants} className="col-lg-4 col-md-6">
+                <motion.div 
+                  whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(14, 165, 233, 0.12)' }}
+                  transition={{ duration: 0.3 }}
+                  className="blog-card h-100 d-flex flex-column shadow-sm rounded-4 overflow-hidden border-0 bg-white position-relative"
+                >
+                  <div className="blog-img-wrap position-relative" style={{ height: '220px', overflow: 'hidden' }}>
+                    <motion.img 
+                      whileHover={{ scale: 1.08 }}
+                      transition={{ duration: 0.4 }}
+                      src={post.image} 
+                      alt={post.title} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                    />
+                    <div className="blog-category position-absolute top-0 start-0 m-3 px-3 py-1 bg-primary text-white rounded-pill small fw-semibold">
+                      {post.category}
                     </div>
-                    <h4 className="blog-title">{blog.title}</h4>
-                    <p className="blog-excerpt">{blog.excerpt}</p>
-                    <a href="#" className="blog-read-more" onClick={(e) => { e.preventDefault(); alert(`Reading full article: ${blog.title}`); }}>
-                      Read More <i className="fas fa-arrow-right ms-1"></i>
-                    </a>
                   </div>
-                </article>
-              </div>
+                  <div className="blog-body p-4 d-flex flex-column flex-grow-1">
+                    <div className="blog-meta d-flex align-items-center gap-3 text-muted small mb-2">
+                      <span><i className="fas fa-calendar-alt text-primary me-1"></i> {post.date}</span>
+                      <span><i className="fas fa-user text-primary me-1"></i> {post.author}</span>
+                    </div>
+                    <h3 className="blog-title h5 fw-bold font-playfair mb-2 text-dark">{post.title}</h3>
+                    <p className="blog-excerpt text-secondary small mb-3 flex-grow-1" style={{ lineHeight: '1.6' }}>{post.excerpt}</p>
+                    
+                    <div className="pt-3 border-top mt-auto d-flex align-items-center justify-content-between">
+                      <span className="text-muted small"><i className="fas fa-clock me-1"></i> {post.readTime}</span>
+                      <span className="blog-read-more text-primary fw-semibold small">
+                        Read Article <i className="fas fa-arrow-right ms-1"></i>
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* NEWSLETTER SECTION */}
-      <section className="py-5 bg-alt" aria-label="Newsletter">
+      {/* NEWSLETTER */}
+      <section className="py-5 bg-alt" aria-label="Blog newsletter">
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-lg-8 text-center reveal visible" style={{ opacity: 1, transform: 'none' }}>
-              <span className="section-label">
-                <i className="fas fa-envelope me-2"></i>Newsletter
+            <div className="col-lg-8 text-center">
+              <span className="section-label mb-2">
+                <i className="fas fa-envelope me-2"></i>Stay Updated
               </span>
-              <h2 className="section-title">
-                Never Miss A <span>Travel Story</span>
+              <h2 className="section-title mb-3">
+                Get Travel Inspiration <br />
+                <span>Delivered To Your Inbox</span>
               </h2>
-              <div className="section-divider"></div>
-              <p className="section-subtitle mb-5">
-                Subscribe to our newsletter and get the latest travel tips, exclusive deals, and destination guides
-                delivered straight to your inbox every week.
+              <p className="text-secondary mb-4" style={{ lineHeight: 1.8 }}>
+                Subscribe to our newsletter for exclusive travel guides, destination highlights, secret travel hacks, and early-bird package discounts.
               </p>
-              <form
-                className="d-flex flex-column flex-sm-row gap-3 justify-content-center"
-                onSubmit={handleSubscribeSubmit}
-                aria-label="Newsletter signup"
-              >
+              <form className="d-flex flex-column flex-sm-row gap-3 max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
                 <input
                   type="email"
-                  className="form-control"
+                  className="form-control rounded-pill px-4 py-3 border-0 shadow-sm"
                   placeholder="Enter your email address"
-                  style={{
-                    maxWidth: '400px',
-                    borderRadius: '50px',
-                    padding: '14px 24px',
-                    fontSize: '1rem',
-                    border: '2px solid rgba(14,165,233,0.3)',
-                  }}
                   required
                   aria-label="Email address"
                 />
-                <button type="submit" className="btn-primary-custom" style={{ whiteSpace: 'nowrap' }}>
+                <motion.button 
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  type="submit" 
+                  className="btn-primary-custom" 
+                  style={{ whiteSpace: 'nowrap' }}
+                >
                   <i className="fas fa-paper-plane me-2"></i>Subscribe Now
-                </button>
+                </motion.button>
               </form>
               <p className="mt-3" style={{ color: '#64748B', fontSize: '0.88rem' }}>
                 <i className="fas fa-lock me-1"></i>No spam, ever. Unsubscribe anytime. We respect your privacy.
@@ -211,7 +221,7 @@ const BlogPage = () => {
           </div>
         </div>
       </section>
-    </>
+    </PageTransition>
   );
 };
 

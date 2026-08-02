@@ -1,36 +1,56 @@
 import './AboutPage.css';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import PageTransition from '../../Components/PageTransition/PageTransition';
+
+const team = [
+  {
+    name: 'Ahmed Khan',
+    role: 'Co-Founder & CEO',
+    image: '/images/team-ahmed.jpg',
+    bio: "With 20+ years in travel, Ahmed's vision turned WanderLux into Pakistan's most trusted international travel agency.",
+  },
+  {
+    name: 'Sara Khan',
+    role: 'Co-Founder & COO',
+    image: '/images/team-sara.jpg',
+    bio: 'Sara oversees all operations from Lahore headquarters, ensuring every Pakistani traveler gets a world-class experience.',
+  },
+  {
+    name: 'Hamza Siddiqui',
+    role: 'Head of Tour Design',
+    image: '/images/team-hamza.jpg',
+    bio: 'Hamza crafts bespoke itineraries for Pakistani travelers with extraordinary attention to detail and global expertise.',
+  },
+  {
+    name: 'Mariam Iqbal',
+    role: 'Customer Experience Manager',
+    image: '/images/team-mariam.jpg',
+    bio: 'Mariam leads our support team, ensuring every Pakistani traveler feels valued and taken care of from booking to return.',
+  },
+];
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
 
 const AboutPage = () => {
-  const team = [
-    {
-      name: 'Ahmed Khan',
-      role: 'Co-Founder & CEO',
-      image: '/images/team-ahmed.jpg',
-      bio: "With 20+ years in travel, Ahmed's vision turned WanderLux into Pakistan's most trusted international travel agency.",
-    },
-    {
-      name: 'Sara Khan',
-      role: 'Co-Founder & COO',
-      image: '/images/team-sara.jpg',
-      bio: 'Sara oversees all operations from Lahore headquarters, ensuring every Pakistani traveler gets a world-class experience.',
-    },
-    {
-      name: 'Hamza Siddiqui',
-      role: 'Head of Tour Design',
-      image: '/images/team-hamza.jpg',
-      bio: 'Hamza crafts bespoke itineraries for Pakistani travelers with extraordinary attention to detail and global expertise.',
-    },
-    {
-      name: 'Mariam Iqbal',
-      role: 'Customer Experience Manager',
-      image: '/images/team-mariam.jpg',
-      bio: 'Mariam leads our support team, ensuring every Pakistani traveler feels valued and taken care of from booking to return.',
-    },
-  ];
-
   return (
-    <>
+    <PageTransition>
       {/* PAGE HERO */}
       <section className="page-hero" style={{ backgroundImage: "url('/images/hero-about.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }} aria-label="About hero">
         <div className="hero-overlay"></div>
@@ -53,7 +73,13 @@ const AboutPage = () => {
       <section className="py-5 bg-alt" aria-label="Our story">
         <div className="container">
           <div className="row g-5 align-items-center">
-            <div className="col-lg-6 reveal-left visible" style={{ opacity: 1, transform: 'none' }}>
+            <motion.div 
+              className="col-lg-6"
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
               <span className="section-label"><i className="fas fa-book-open me-2"></i>Our Story</span>
               <h2 className="section-title">How WanderLux <span>Began</span></h2>
               <div className="section-divider"></div>
@@ -73,8 +99,15 @@ const AboutPage = () => {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="col-lg-6 reveal-right visible" style={{ opacity: 1, transform: 'none' }}>
+            </motion.div>
+
+            <motion.div 
+              className="col-lg-6"
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
               <div className="story-img-wrap">
                 <img src="/images/about-team.jpg" alt="Our team at work" style={{ height: '500px', width: '100%', objectFit: 'cover' }} />
                 <div className="story-img-badge">
@@ -82,7 +115,7 @@ const AboutPage = () => {
                   <div className="badge-text">Founded</div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -92,11 +125,17 @@ const AboutPage = () => {
         <div className="container">
           <div className="section-header center mb-5">
             <span className="section-label">Our Purpose</span>
-            <h2 className="section-title reveal visible" style={{ opacity: 1, transform: 'none' }}>Mission &amp; <span>Vision</span></h2>
+            <h2 className="section-title">Mission &amp; <span>Vision</span></h2>
             <div className="section-divider"></div>
           </div>
           <div className="row g-4">
-            <div className="col-lg-6">
+            <motion.div 
+              className="col-lg-6"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
               <div style={{ background: 'linear-gradient(135deg,#0EA5E9,#14B8A6)', borderRadius: '24px', padding: '48px', color: 'white', height: '100%' }}>
                 <div style={{ width: '60px', height: '60px', background: 'rgba(255,255,255,0.2)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', marginBottom: '24px' }}>
                   <i className="fas fa-bullseye"></i>
@@ -104,8 +143,15 @@ const AboutPage = () => {
                 <h3 style={{ color: 'white', fontSize: '1.8rem', marginBottom: '16px' }}>Our Mission</h3>
                 <p style={{ color: 'rgba(255,255,255,0.9)', lineHeight: 1.9, fontSize: '1.05rem' }}>To provide affordable, safe, and memorable travel experiences while delivering outstanding customer service. We believe every person deserves to explore the world and create lifelong memories.</p>
               </div>
-            </div>
-            <div className="col-lg-6">
+            </motion.div>
+            
+            <motion.div 
+              className="col-lg-6"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+            >
               <div style={{ background: 'linear-gradient(135deg,#0F172A,#1E293B)', borderRadius: '24px', padding: '48px', color: 'white', height: '100%' }}>
                 <div style={{ width: '60px', height: '60px', background: 'rgba(14,165,233,0.2)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem', color: '#0EA5E9', marginBottom: '24px' }}>
                   <i className="fas fa-eye"></i>
@@ -113,62 +159,7 @@ const AboutPage = () => {
                 <h3 style={{ color: 'white', fontSize: '1.8rem', marginBottom: '16px' }}>Our Vision</h3>
                 <p style={{ color: 'rgba(255,255,255,0.8)', lineHeight: 1.9, fontSize: '1.05rem' }}>To become one of the world's most trusted travel agencies by connecting people with incredible destinations, building lasting relationships, and setting the standard for excellence in travel experiences.</p>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CORE VALUES */}
-      <section className="py-5 bg-alt" aria-label="Core values">
-        <div className="container">
-          <div className="section-header center">
-            <span className="section-label">What We Stand For</span>
-            <h2 className="section-title reveal visible" style={{ opacity: 1, transform: 'none' }}>Our Core <span>Values</span></h2>
-            <div className="section-divider"></div>
-          </div>
-          <div className="row g-4">
-            <div className="col-lg-4 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
-              <div className="feature-card">
-                <div className="feature-icon"><i className="fas fa-heart"></i></div>
-                <h4>Passion for Travel</h4>
-                <p>Every team member is a passionate traveler. We genuinely love what we do and share that enthusiasm with every client.</p>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
-              <div className="feature-card">
-                <div className="feature-icon"><i className="fas fa-handshake"></i></div>
-                <h4>Integrity &amp; Trust</h4>
-                <p>We operate with complete transparency. No hidden fees, no surprises – just honest, reliable service you can count on.</p>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
-              <div className="feature-card">
-                <div className="feature-icon"><i className="fas fa-star"></i></div>
-                <h4>Excellence</h4>
-                <p>We never settle for ordinary. From accommodation to activities, we ensure every aspect of your trip exceeds expectations.</p>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
-              <div className="feature-card">
-                <div className="feature-icon"><i className="fas fa-leaf"></i></div>
-                <h4>Sustainability</h4>
-                <p>We're committed to responsible tourism that protects the environment and respects local cultures and communities.</p>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
-              <div className="feature-card">
-                <div className="feature-icon"><i className="fas fa-users"></i></div>
-                <h4>Customer First</h4>
-                <p>Our clients are at the heart of everything we do. Your satisfaction and safety are our top priorities, always.</p>
-              </div>
-            </div>
-            <div className="col-lg-4 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
-              <div className="feature-card">
-                <div className="feature-icon"><i className="fas fa-lightbulb"></i></div>
-                <h4>Innovation</h4>
-                <p>We continuously improve our services, embrace new technology, and find creative ways to enhance your travel experience.</p>
-              </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -178,14 +169,24 @@ const AboutPage = () => {
         <div className="container">
           <div className="section-header center">
             <span className="section-label"><i className="fas fa-users me-2"></i>Our Team</span>
-            <h2 className="section-title reveal visible" style={{ opacity: 1, transform: 'none' }}>Meet The <span>Experts</span></h2>
+            <h2 className="section-title">Meet The <span>Experts</span></h2>
             <div className="section-divider"></div>
-            <p className="section-subtitle reveal visible" style={{ opacity: 1, transform: 'none' }}>The passionate people behind your perfect travel experiences</p>
+            <p className="section-subtitle">The passionate people behind your perfect travel experiences</p>
           </div>
-          <div className="row g-4">
+          <motion.div 
+            className="row g-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+          >
             {team.map((member, index) => (
-              <div key={index} className="col-lg-3 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
-                <div className="team-card">
+              <motion.div key={index} variants={itemVariants} className="col-lg-3 col-md-6">
+                <motion.div 
+                  whileHover={{ y: -8 }}
+                  transition={{ duration: 0.3 }}
+                  className="team-card"
+                >
                   <div className="team-img">
                     <img src={member.image} alt={member.name} />
                     <div className="team-social">
@@ -199,10 +200,10 @@ const AboutPage = () => {
                     <div className="position">{member.role}</div>
                     <p>{member.bio}</p>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -210,16 +211,16 @@ const AboutPage = () => {
       <section className="cta-section" aria-label="Call to action">
         <div className="container">
           <div className="cta-content">
-            <h2 className="reveal visible" style={{ opacity: 1, transform: 'none' }}>Ready To Travel <span style={{ color: '#0EA5E9' }}>With Us?</span></h2>
-            <p className="reveal visible" style={{ opacity: 1, transform: 'none' }}>Join thousands of happy travelers who have trusted WanderLux to create their perfect trip.</p>
-            <div className="d-flex flex-wrap gap-3 justify-content-center reveal visible" style={{ opacity: 1, transform: 'none' }}>
-              <a href="#contact" className="btn-primary-custom"><i className="fas fa-suitcase-rolling me-2"></i> Start Booking</a>
-              <a href="#contact" className="btn-secondary-custom"><i className="fas fa-envelope me-2"></i> Contact Us</a>
+            <h2>Ready To Travel <span style={{ color: '#0EA5E9' }}>With Us?</span></h2>
+            <p>Join thousands of happy travelers who have trusted WanderLux to create their perfect trip.</p>
+            <div className="d-flex flex-wrap gap-3 justify-content-center">
+              <Link to="/packages" className="btn-primary-custom"><i className="fas fa-suitcase-rolling me-2"></i> Start Booking</Link>
+              <Link to="/contact" className="btn-secondary-custom"><i className="fas fa-envelope me-2"></i> Contact Us</Link>
             </div>
           </div>
         </div>
       </section>
-    </>
+    </PageTransition>
   );
 };
 

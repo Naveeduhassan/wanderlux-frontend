@@ -1,8 +1,10 @@
 import './DestinationsPage.css';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { fetchWithCache } from '../../services/apiCache';
 import toast from 'react-hot-toast';
+import PageTransition from '../../Components/PageTransition/PageTransition';
 
 const initialDestinationsFallback = [
   {
@@ -85,6 +87,24 @@ const initialDestinationsFallback = [
   }
 ];
 
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 35 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 const DestinationsPage = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -133,7 +153,6 @@ const DestinationsPage = () => {
     return <div className="stars d-inline-flex gap-1">{stars}</div>;
   };
 
-  // Filter destinations based on search query
   const filteredDestinations = searchQuery
     ? destinations.filter((dest) => {
         const q = searchQuery.toLowerCase();
@@ -150,7 +169,7 @@ const DestinationsPage = () => {
   };
 
   return (
-    <>
+    <PageTransition>
       {/* PAGE HERO */}
       <section className="page-hero" style={{ backgroundImage: "url('/images/hero-destinations.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }} aria-label="Destinations hero">
         <div className="hero-overlay"></div>
@@ -174,11 +193,11 @@ const DestinationsPage = () => {
         <div className="container">
           <div className="section-header center mb-4">
             <span className="section-label"><i className="fas fa-compass me-2"></i>Handpicked Destinations</span>
-            <h2 className="section-title reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <h2 className="section-title">
               {searchQuery ? `Search Results for "${searchQuery}"` : 'Unforgettable Places To Visit'}
             </h2>
             <div className="section-divider"></div>
-            <p className="section-subtitle reveal visible" style={{ opacity: 1, transform: 'none' }}>
+            <p className="section-subtitle">
               Click on any destination to view comprehensive tour details, itineraries, and booking information.
             </p>
           </div>
@@ -223,7 +242,13 @@ const DestinationsPage = () => {
               </button>
             </div>
           ) : (
-            <div className="row g-4">
+            <motion.div 
+              className="row g-4"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-50px' }}
+            >
               {filteredDestinations.map((dest) => {
                 const displayPrice = typeof dest.price === 'number' ? `$${dest.price}` : dest.price;
                 const badgeIcon = dest.badgeIcon || (dest.badge && dest.badge.icon) || 'fas fa-fire';
@@ -234,10 +259,21 @@ const DestinationsPage = () => {
                   (travelersQuery ? `&travelers=${encodeURIComponent(travelersQuery)}` : '');
 
                 return (
-                  <div key={dest._id || dest.id || dest.name} className="col-lg-4 col-md-6 reveal visible" style={{ opacity: 1, transform: 'none' }}>
-                    <div className="destination-card h-100 d-flex flex-column shadow-sm rounded-4 overflow-hidden border-0" style={{ background: '#FFFFFF' }}>
+                  <motion.div key={dest._id || dest.id || dest.name} variants={cardVariants} className="col-lg-4 col-md-6">
+                    <motion.div 
+                      whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(14, 165, 233, 0.15)' }}
+                      transition={{ duration: 0.3 }}
+                      className="destination-card h-100 d-flex flex-column shadow-sm rounded-4 overflow-hidden border-0" 
+                      style={{ background: '#FFFFFF' }}
+                    >
                       <div className="card-img-wrap position-relative" style={{ height: '240px', overflow: 'hidden' }}>
-                        <img src={dest.image} alt={dest.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <motion.img 
+                          whileHover={{ scale: 1.08 }}
+                          transition={{ duration: 0.4 }}
+                          src={dest.image} 
+                          alt={dest.name} 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        />
                         {badgeText && (
                           <div className="card-badge position-absolute top-0 start-0 m-3 px-3 py-1.5 bg-primary text-white rounded-pill small fw-semibold shadow-sm">
                             <i className={`${badgeIcon} me-1`}></i> {badgeText}
@@ -263,35 +299,42 @@ const DestinationsPage = () => {
                         </div>
 
                         <div className="d-flex gap-2">
-                          <button 
+                          <motion.button 
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                             type="button" 
                             onClick={() => setSelectedDestModal(dest)} 
                             className="btn btn-outline-secondary flex-fill rounded-pill py-2 small fw-semibold d-flex align-items-center justify-content-center gap-1"
                           >
                             <i className="fas fa-info-circle"></i> View Details
-                          </button>
-                          <button 
+                          </motion.button>
+                          <motion.button 
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                             type="button"
                             onClick={() => handleBookClick(bookTarget)}
                             className="btn btn-primary-custom flex-fill rounded-pill py-2 text-white small fw-semibold d-flex align-items-center justify-content-center gap-1 border-0"
                             style={{ background: 'linear-gradient(135deg, #0EA5E9, #0284C7)' }}
                           >
                             <i className="fas fa-paper-plane"></i> Book Now
-                          </button>
+                          </motion.button>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    </motion.div>
+                  </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
           )}
         </div>
       </section>
 
       {/* ENHANCED DETAILS MODAL */}
       {selectedDestModal && (
-        <div 
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           className="position-fixed inset-0 d-flex align-items-center justify-content-center p-3" 
           style={{ 
             top: 0, left: 0, right: 0, bottom: 0,
@@ -301,7 +344,10 @@ const DestinationsPage = () => {
           }}
           onClick={() => setSelectedDestModal(null)}
         >
-          <div 
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
             className="card border-0 shadow-2xl rounded-4 overflow-hidden w-100 modal-custom-scrollbar" 
             style={{ maxWidth: '680px', maxHeight: '88vh', background: '#FFFFFF' }}
             onClick={(e) => e.stopPropagation()}
@@ -334,7 +380,6 @@ const DestinationsPage = () => {
 
             {/* CONTENT BODY */}
             <div className="p-4">
-              {/* RATING & PRICE BAR */}
               <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 pb-3 border-bottom">
                 <div className="d-flex align-items-center gap-2">
                   <div className="d-flex text-warning fs-5">
@@ -351,7 +396,6 @@ const DestinationsPage = () => {
                 </div>
               </div>
 
-              {/* SPECIFICATION BADGES GRID */}
               <div className="row g-3 mb-4">
                 <div className="col-6 col-sm-3">
                   <div className="p-3 rounded-3 text-center bg-light border">
@@ -383,7 +427,6 @@ const DestinationsPage = () => {
                 </div>
               </div>
 
-              {/* OVERVIEW & DESCRIPTION */}
               <div className="mb-4 p-3 rounded-3" style={{ background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
                 <h5 className="fw-bold font-playfair text-dark mb-2 d-flex align-items-center gap-2">
                   <i className="fas fa-quote-left text-info" style={{ fontSize: '1rem' }}></i> Overview &amp; Experience
@@ -393,7 +436,6 @@ const DestinationsPage = () => {
                 </p>
               </div>
 
-              {/* INCLUDED AMENITIES */}
               <div className="mb-4">
                 <h6 className="fw-bold font-playfair text-dark mb-2">Tour Highlights &amp; Inclusions</h6>
                 <div className="d-flex flex-wrap gap-2">
@@ -404,7 +446,6 @@ const DestinationsPage = () => {
                 </div>
               </div>
 
-              {/* ACTION FOOTER */}
               <div className="d-flex gap-3 justify-content-end pt-3 border-top">
                 <button type="button" onClick={() => setSelectedDestModal(null)} className="btn btn-outline-secondary px-4 rounded-pill">Close</button>
                 <button 
@@ -422,10 +463,10 @@ const DestinationsPage = () => {
                 </button>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
-    </>
+    </PageTransition>
   );
 };
 
