@@ -34,6 +34,8 @@ const floatBadgeVariants = {
   },
 };
 
+import Hero3DCanvas from '../Hero3DCanvas/Hero3DCanvas';
+
 const Hero = () => {
   const navigate = useNavigate();
   const [destinationSearch, setDestinationSearch] = useState('');
@@ -52,6 +54,8 @@ const Hero = () => {
 
   return (
     <section className="hero-section position-relative overflow-hidden" aria-label="Hero section">
+      {/* 3D WebGL Particle Globe Canvas */}
+      <Hero3DCanvas />
       {/* Floating Particles Overlay */}
       <div className="hero-particles" aria-hidden="true">
         <motion.div 
