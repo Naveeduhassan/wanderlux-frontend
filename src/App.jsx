@@ -5,6 +5,7 @@ import Navbar from './Components/Navbar/Navbar';
 import Footer from './Components/Footer/Footer';
 import BackToTop from './Components/BackToTop/BackToTop';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
+import AITravelConcierge from './Components/AITravelConcierge/AITravelConcierge';
 
 // Lazy loading route components for code splitting & performance optimization
 const HomePage = lazy(() => import('./Pages/Home/HomePage'));
@@ -172,6 +173,7 @@ function AppContent() {
       </Suspense>
       <Footer />
       <BackToTop />
+      <AITravelConcierge />
     </>
   );
 }

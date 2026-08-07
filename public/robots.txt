@@ -1,0 +1,7 @@
+# WanderLux Travel Agency Robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /login
+
+Sitemap: https://wanderlux-frontend.onrender.com/sitemap.xml
