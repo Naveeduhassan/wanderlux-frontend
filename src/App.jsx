@@ -178,11 +178,16 @@ function AppContent() {
   );
 }
 
+import './styles/design-tokens.css';
+import { LanguageProvider } from './context/LanguageContext';
+
 function App() {
   return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
+    <LanguageProvider>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </LanguageProvider>
   );
 }
 

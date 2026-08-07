@@ -2,6 +2,8 @@ import './Navbar.css';
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import LanguageSelector from '../LanguageSelector/LanguageSelector';
+import { useLanguage } from '../../context/LanguageContext';
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -223,6 +225,9 @@ function Navbar() {
               >
                 <i className="fas fa-paper-plane me-1.5"></i>Book Now
               </Link>
+            </li>
+            <li className="nav-item ms-lg-2 my-2 my-lg-0 d-flex align-items-center">
+              <LanguageSelector />
             </li>
           </ul>
         </div>
