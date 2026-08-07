@@ -13,15 +13,17 @@ import PageTransition from '../../Components/PageTransition/PageTransition';
 const HomePage = () => {
   return (
     <PageTransition>
-      <Hero />
-      <About />
-      <Destinations />
-      <WhyChooseUs />
-      <Packages />
-      <Stats />
-      <Testimonials />
-      <CTA />
-      <Newsletter />
+      <main id="main-content" tabIndex="-1">
+        <Hero />
+        <About />
+        <Destinations />
+        <WhyChooseUs />
+        <Packages />
+        <Stats />
+        <Testimonials />
+        <CTA />
+        <Newsletter />
+      </main>
     </PageTransition>
   );
 };

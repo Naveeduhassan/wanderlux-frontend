@@ -96,10 +96,14 @@ function Navbar() {
   const showNavbarBackground = scrolled || isAboutActive || isDestinationsActive || isPackagesActive || isGalleryActive || isTestimonialsActive || isBlogActive || isFAQActive || isContactActive || location.pathname.startsWith('/admin') || location.pathname === '/login';
 
   return (
-    <nav className={`navbar navbar-custom navbar-expand-lg ${showNavbarBackground ? 'scrolled' : ''}`} id="mainNavbar" role="navigation" aria-label="Main navigation">
-      <div className="container">
-        {/* Brand Logo */}
-        <Link className="navbar-brand" to="/" onClick={() => setIsMobileOpen(false)}>
+    <>
+      <a href="#main-content" className="visually-hidden-focusable btn btn-sm btn-primary position-absolute top-0 start-0 z-5 m-2 text-white fw-bold">
+        Skip to main content
+      </a>
+      <nav className={`navbar navbar-custom navbar-expand-lg ${showNavbarBackground ? 'scrolled' : ''}`} id="mainNavbar" role="navigation" aria-label="Main navigation">
+        <div className="container">
+          {/* Brand Logo */}
+          <Link className="navbar-brand" to="/" onClick={() => setIsMobileOpen(false)} aria-label="WanderLux Travel Agency Home">
           <div className="brand-icon" aria-hidden="true"><i className="fas fa-globe-americas"></i></div>
           <span className="brand-text">Wander<span>Lux</span></span>
         </Link>
@@ -293,6 +297,7 @@ function Navbar() {
         </div>
       </div>
     </nav>
+    </>
   );
 }
 
