@@ -56,29 +56,11 @@ function ScrollToHashElement() {
   return null;
 }
 
-// Helper component to initialize and re-bind scroll reveals and parallax with requestAnimationFrame throttling
+// Helper component to initialize scroll reveals without scroll lag
 function ScrollRevealHandler() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const heroBg = document.querySelector('.hero-bg');
-          if (heroBg) {
-            heroBg.style.transform = `scale(1.05) translateY(${window.scrollY * 0.25}px)`;
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // Scroll reveal observer
     const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
     
     const observer = new IntersectionObserver(
@@ -90,7 +72,7 @@ function ScrollRevealHandler() {
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
+      { threshold: 0.08, rootMargin: '0px 0px -20px 0px' }
     );
 
     reveals.forEach((el) => {
@@ -98,7 +80,6 @@ function ScrollRevealHandler() {
     });
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
       reveals.forEach((el) => {
         observer.unobserve(el);
       });

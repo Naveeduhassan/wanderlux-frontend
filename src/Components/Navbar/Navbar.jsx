@@ -45,24 +45,27 @@ function Navbar() {
   const lastScrollY = useRef(0);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          const delta = currentScrollY - lastScrollY.current;
 
-      if (isMobileOpen) {
-        setVisible(true);
-        lastScrollY.current = currentScrollY;
-        return;
+          if (isMobileOpen || currentScrollY <= 15) {
+            setVisible(true);
+          } else if (delta > 8 && currentScrollY > 80) {
+            setVisible(false);
+          } else if (delta < -8) {
+            setVisible(true);
+          }
+
+          lastScrollY.current = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
       }
-
-      if (currentScrollY <= 10) {
-        setVisible(true);
-      } else if (currentScrollY > lastScrollY.current && currentScrollY > 60) {
-        setVisible(false);
-      } else if (currentScrollY < lastScrollY.current) {
-        setVisible(true);
-      }
-
-      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
