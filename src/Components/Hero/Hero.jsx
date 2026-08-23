@@ -87,20 +87,15 @@ const Hero = () => {
       <div className="hero-overlay"></div>
 
       <div className="container">
-        <motion.div 
-          className="row align-items-center min-vh-100"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
+        <div className="row align-items-center min-vh-100">
           <div className="col-lg-7 hero-content pt-5">
-            <motion.h1 variants={itemVariants} className="hero-title">
+            <h1 className="hero-title">
               Explore The World<br />With <span className="text-gradient">Confidence</span>
-            </motion.h1>
+            </h1>
 
-            <motion.p variants={itemVariants} className="hero-subtitle">
+            <p className="hero-subtitle">
               Discover breathtaking destinations, unforgettable adventures, and carefully planned travel experiences that create memories for a lifetime.
-            </motion.p>
+            </p>
 
             {/* CTA Buttons */}
             <motion.div variants={itemVariants} className="d-flex flex-wrap gap-3 mb-4">
@@ -146,7 +141,7 @@ const Hero = () => {
               </div>
             </motion.div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Glassmorphic Search Bar */}
         <motion.div 
