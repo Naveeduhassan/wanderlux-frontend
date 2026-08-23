@@ -8,19 +8,18 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  padding: 18px 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: transparent;
+  padding: 16px 0;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent !important;
   font-family: var(--font-sans);
 }
 
-.navbar-custom.scrolled {
-  background: var(--glass-bg);
-  backdrop-filter: var(--backdrop-blur);
-  -webkit-backdrop-filter: var(--backdrop-blur);
-  padding: 10px 0;
-  box-shadow: var(--shadow-md);
-  border-bottom: 1px solid var(--border-subtle);
+.navbar-custom.navbar-visible {
+  transform: translateY(0);
+}
+
+.navbar-custom.navbar-hidden {
+  transform: translateY(-100%);
 }
 
 .navbar-custom .navbar-brand {

@@ -41,17 +41,33 @@ function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const [visible, setVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
+      const currentScrollY = window.scrollY;
+
+      if (isMobileOpen) {
+        setVisible(true);
+        lastScrollY.current = currentScrollY;
+        return;
       }
+
+      if (currentScrollY <= 10) {
+        setVisible(true);
+      } else if (currentScrollY > lastScrollY.current && currentScrollY > 60) {
+        setVisible(false);
+      } else if (currentScrollY < lastScrollY.current) {
+        setVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
     };
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isMobileOpen]);
 
   useEffect(() => {
     const checkUser = () => {
@@ -93,14 +109,13 @@ function Navbar() {
   const isContactActive = location.pathname === '/contact' || location.pathname === '/contact.html';
 
   const isMoreActive = isAboutActive || isTestimonialsActive || isBlogActive || isFAQActive;
-  const showNavbarBackground = scrolled || isAboutActive || isDestinationsActive || isPackagesActive || isGalleryActive || isTestimonialsActive || isBlogActive || isFAQActive || isContactActive || location.pathname.startsWith('/admin') || location.pathname === '/login';
 
   return (
     <>
       <a href="#main-content" className="visually-hidden-focusable btn btn-sm btn-primary position-absolute top-0 start-0 z-5 m-2 text-white fw-bold">
         Skip to main content
       </a>
-      <nav className={`navbar navbar-custom navbar-expand-lg ${showNavbarBackground ? 'scrolled' : ''}`} id="mainNavbar" role="navigation" aria-label="Main navigation">
+      <nav className={`navbar navbar-custom navbar-expand-lg ${visible ? 'navbar-visible' : 'navbar-hidden'}`} id="mainNavbar" role="navigation" aria-label="Main navigation">
         <div className="container">
           {/* Brand Logo */}
           <Link className="navbar-brand" to="/" onClick={() => setIsMobileOpen(false)} aria-label="WanderLux Travel Agency Home">
