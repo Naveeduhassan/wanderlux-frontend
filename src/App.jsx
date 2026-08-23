@@ -23,12 +23,12 @@ const AdminDashboard = lazy(() => import('./Pages/Admin/AdminDashboard'));
 // Page loading fallback component
 function PageLoader() {
   return (
-    <div className="d-flex align-items-center justify-content-center min-vh-100 bg-slate-900">
+    <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light">
       <div className="text-center">
         <div className="spinner-border text-primary" style={{ width: '3rem', height: '3rem' }} role="status">
-          <span className="visually-hidden">Loading...</span>
+          <span className="visually-hidden">Loading WanderLux...</span>
         </div>
-        <p className="text-muted mt-3 mb-0 small">Loading WanderLux...</p>
+        <p className="text-muted mt-3 mb-0 small font-sans fw-medium">Loading WanderLux...</p>
       </div>
     </div>
   );
@@ -129,48 +129,50 @@ function AppContent() {
       <ScrollToHashElement />
       <ScrollRevealHandler />
       <Navbar />
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/destinations" element={<DestinationsPage />} />
-          <Route path="/packages" element={<PackagesPage />} />
-          <Route path="/gallery" element={<GalleryPage />} />
-          <Route path="/testimonials" element={<TestimonialsPage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/faq" element={<FAQPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          {/* Protected Admin Routes */}
-          <Route 
-            path="/admin/dashboard" 
-            element={
-              <ProtectedRoute adminOnly={true}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            } 
-          />
-          {/* Fallback Legacy HTML Routes */}
-          <Route path="/index.html" element={<HomePage />} />
-          <Route path="/about.html" element={<AboutPage />} />
-          <Route path="/destinations.html" element={<DestinationsPage />} />
-          <Route path="/packages.html" element={<PackagesPage />} />
-          <Route path="/gallery.html" element={<GalleryPage />} />
-          <Route path="/testimonials.html" element={<TestimonialsPage />} />
-          <Route path="/blog.html" element={<BlogPage />} />
-          <Route path="/faq.html" element={<FAQPage />} />
-          <Route path="/contact.html" element={<ContactPage />} />
-          <Route path="/login.html" element={<LoginPage />} />
-          <Route 
-            path="/admin/dashboard.html" 
-            element={
-              <ProtectedRoute adminOnly={true}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            } 
-          />
-        </Routes>
-      </Suspense>
+      <main id="main-content" tabIndex="-1">
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/destinations" element={<DestinationsPage />} />
+            <Route path="/packages" element={<PackagesPage />} />
+            <Route path="/gallery" element={<GalleryPage />} />
+            <Route path="/testimonials" element={<TestimonialsPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            {/* Protected Admin Routes */}
+            <Route 
+              path="/admin/dashboard" 
+              element={
+                <ProtectedRoute adminOnly={true}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            {/* Fallback Legacy HTML Routes */}
+            <Route path="/index.html" element={<HomePage />} />
+            <Route path="/about.html" element={<AboutPage />} />
+            <Route path="/destinations.html" element={<DestinationsPage />} />
+            <Route path="/packages.html" element={<PackagesPage />} />
+            <Route path="/gallery.html" element={<GalleryPage />} />
+            <Route path="/testimonials.html" element={<TestimonialsPage />} />
+            <Route path="/blog.html" element={<BlogPage />} />
+            <Route path="/faq.html" element={<FAQPage />} />
+            <Route path="/contact.html" element={<ContactPage />} />
+            <Route path="/login.html" element={<LoginPage />} />
+            <Route 
+              path="/admin/dashboard.html" 
+              element={
+                <ProtectedRoute adminOnly={true}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
+          </Routes>
+        </Suspense>
+      </main>
       <Footer />
       <BackToTop />
       <AITravelConcierge />

@@ -161,8 +161,9 @@ const Hero = () => {
               <div className="row g-3 align-items-end">
                 <div className="col-md-3 col-sm-6">
                   <div className="search-field">
-                    <label><i className="fas fa-map-marker-alt me-1.5" style={{ color: '#0EA5E9' }}></i> Destination</label>
+                    <label htmlFor="hero-destination-input"><i className="fas fa-map-marker-alt me-1.5" style={{ color: '#0EA5E9' }}></i> Destination</label>
                     <input 
+                      id="hero-destination-input"
                       type="text" 
                       placeholder="Where do you want to go?" 
                       value={destinationSearch}
@@ -173,8 +174,9 @@ const Hero = () => {
                 </div>
                 <div className="col-md-3 col-sm-6">
                   <div className="search-field">
-                    <label><i className="fas fa-calendar me-1.5" style={{ color: '#0EA5E9' }}></i> Check In</label>
+                    <label htmlFor="hero-checkin-input"><i className="fas fa-calendar me-1.5" style={{ color: '#0EA5E9' }}></i> Check In</label>
                     <input 
+                      id="hero-checkin-input"
                       type="date" 
                       value={checkInDate}
                       onChange={(e) => setCheckInDate(e.target.value)}
@@ -184,8 +186,9 @@ const Hero = () => {
                 </div>
                 <div className="col-md-3 col-sm-6">
                   <div className="search-field">
-                    <label><i className="fas fa-users me-1.5" style={{ color: '#0EA5E9' }}></i> Travelers</label>
+                    <label htmlFor="hero-travelers-select"><i className="fas fa-users me-1.5" style={{ color: '#0EA5E9' }}></i> Travelers</label>
                     <select 
+                      id="hero-travelers-select"
                       value={travelersCount}
                       onChange={(e) => setTravelersCount(e.target.value)}
                       aria-label="Number of travelers"

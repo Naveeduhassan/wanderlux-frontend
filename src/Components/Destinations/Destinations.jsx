@@ -193,6 +193,8 @@ const Destinations = () => {
                       transition={{ duration: 0.4 }}
                       src={dest.image} 
                       alt={dest.name} 
+                      loading="lazy"
+                      decoding="async"
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                     />
                     {badgeText && (

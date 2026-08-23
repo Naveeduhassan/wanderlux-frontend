@@ -158,6 +158,8 @@ const Packages = () => {
                       transition={{ duration: 0.4 }}
                       src={pkg.image} 
                       alt={displayTitle} 
+                      loading="lazy"
+                      decoding="async"
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                     />
                     {(pkg.badgeText || (pkg.badge && pkg.badge.text)) && (
