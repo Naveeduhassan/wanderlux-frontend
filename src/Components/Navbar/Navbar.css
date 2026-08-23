@@ -27,10 +27,14 @@
   font-family: var(--font-serif);
   font-size: 1.6rem;
   font-weight: 800;
-  color: var(--text-main);
+  color: #ffffff !important;
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.navbar-custom .brand-text {
+  color: #ffffff !important;
 }
 
 .navbar-custom .brand-icon {
@@ -51,8 +55,8 @@
 }
 
 .navbar-custom .nav-link {
-  color: var(--text-main) !important;
-  opacity: 0.88;
+  color: #ffffff !important;
+  opacity: 0.95;
   font-size: 0.88rem;
   font-weight: 500;
   padding: 6px 14px !important;
@@ -65,8 +69,8 @@
 .navbar-custom .nav-link:hover,
 .navbar-custom .nav-link.active {
   opacity: 1;
-  background: var(--color-primary-light);
-  color: var(--color-primary) !important;
+  background: rgba(14, 165, 233, 0.2);
+  color: #38bdf8 !important;
 }
 
 .navbar-custom .nav-link.active::after {

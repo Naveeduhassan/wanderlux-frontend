@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { Globe, DollarSign, Sun, Moon } from 'lucide-react';
+import { Globe, DollarSign } from 'lucide-react';
 
 function LanguageSelector() {
-  const { lang, setLang, currency, setCurrency, theme, toggleTheme } = useLanguage();
+  const { lang, setLang, currency, setCurrency } = useLanguage();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isCurrOpen, setIsCurrOpen] = useState(false);
 
@@ -26,17 +26,6 @@ function LanguageSelector() {
 
   return (
     <div className="d-inline-flex align-items-center gap-2">
-      {/* Theme Toggle Button */}
-      <button 
-        type="button" 
-        onClick={toggleTheme} 
-        className="btn btn-sm text-slate-300 border-0 p-1-5 rounded-circle d-flex align-items-center justify-content-center shadow-sm"
-        style={{ background: 'rgba(255, 255, 255, 0.12)', width: '32px', height: '32px' }}
-        title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-        aria-label="Toggle dark/light theme"
-      >
-        {theme === 'dark' ? <Sun size={15} className="text-warning" /> : <Moon size={15} className="text-info" />}
-      </button>
 
       {/* Language Selector Dropdown */}
       <div className="position-relative" ref={langRef}>

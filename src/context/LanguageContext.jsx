@@ -83,7 +83,7 @@ export const currencyRates = {
 export function LanguageProvider({ children }) {
   const [lang, setLang] = useState(() => localStorage.getItem('wanderlux_lang') || 'en');
   const [currency, setCurrency] = useState(() => localStorage.getItem('wanderlux_currency') || 'USD');
-  const [theme, setTheme] = useState(() => localStorage.getItem('wanderlux_theme') || 'dark');
+  const theme = 'light';
 
   useEffect(() => {
     localStorage.setItem('wanderlux_lang', lang);
@@ -94,13 +94,9 @@ export function LanguageProvider({ children }) {
   }, [currency]);
 
   useEffect(() => {
-    localStorage.setItem('wanderlux_theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-  };
+    localStorage.setItem('wanderlux_theme', 'light');
+    document.documentElement.setAttribute('data-theme', 'light');
+  }, []);
 
   const formatPrice = (amountUSD) => {
     const numericUSD = typeof amountUSD === 'number' ? amountUSD : Number(String(amountUSD).replace(/[^0-9.]/g, '')) || 0;
@@ -114,7 +110,7 @@ export function LanguageProvider({ children }) {
   };
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang, currency, setCurrency, theme, toggleTheme, formatPrice, t }}>
+    <LanguageContext.Provider value={{ lang, setLang, currency, setCurrency, theme, formatPrice, t }}>
       {children}
     </LanguageContext.Provider>
   );
